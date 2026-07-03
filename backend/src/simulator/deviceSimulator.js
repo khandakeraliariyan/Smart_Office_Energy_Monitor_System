@@ -1,45 +1,14 @@
-const Device = require("../models/Device");
-const deviceService = require("../services/device.service");
+const SimulatorService = require("../services/simulator.service");
 
-const startSimulator = async (io) => {
+const startSimulator = (io) => {
 
-    console.log("🚀 Device Simulator Started");
+    console.log("🚀 Smart Simulator Started");
 
     setInterval(async () => {
 
         try {
 
-            const devices = await deviceService.getAllDevices();
-
-            if (!devices.length) return;
-
-            const randomDevice =
-                devices[Math.floor(Math.random() * devices.length)];
-
-            const newStatus = !randomDevice.status;
-
-            const updatedDevice =
-                await deviceService.updateDevice(randomDevice._id, {
-
-                    status: newStatus,
-
-                    currentPower: newStatus
-                        ? randomDevice.powerRating
-                        : 0,
-
-                    lastChanged: new Date()
-
-                });
-
-            console.log(
-                `${updatedDevice.name} -> ${updatedDevice.status ? "ON" : "OFF"}`
-            );
-
-            if (io) {
-
-                io.emit("deviceUpdated", updatedDevice);
-
-            }
+            await SimulatorService.simulate(io);
 
         } catch (err) {
 
