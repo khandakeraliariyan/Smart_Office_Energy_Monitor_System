@@ -6,6 +6,7 @@ const cookieParser = require("cookie-parser");
 const morgan = require("morgan");
 
 const deviceRoutes = require("./routes/device.routes");
+const dashboardRoutes = require("./routes/dashboard.routes");
 
 const errorMiddleware = require("./middleware/errorMiddleware");
 
@@ -28,6 +29,7 @@ app.use(morgan("dev"));
 app.use(errorMiddleware);
 
 app.use("/api/v1/devices", deviceRoutes);
+app.use("/api/v1/dashboard", dashboardRoutes);
 
 app.get("/", (req, res) => {
     res.json({
