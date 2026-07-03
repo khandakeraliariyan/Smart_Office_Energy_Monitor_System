@@ -9,6 +9,7 @@ const deviceRoutes = require("./routes/device.routes");
 const dashboardRoutes = require("./routes/dashboard.routes");
 const roomRoutes = require("./routes/room.routes");
 const powerRoutes = require("./routes/power.routes");
+const alertRoutes = require("./routes/alert.routes");
 
 const errorMiddleware = require("./middleware/errorMiddleware");
 
@@ -34,6 +35,7 @@ app.use("/api/v1/devices", deviceRoutes);
 app.use("/api/v1/dashboard", dashboardRoutes);
 app.use("/api/v1/rooms", roomRoutes);
 app.use("/api/v1/power", powerRoutes);
+app.use("/api/v1/alerts", alertRoutes);
 
 app.get("/", (req, res) => {
     res.json({
