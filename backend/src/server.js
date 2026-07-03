@@ -9,13 +9,14 @@ const connectDB = require("./config/db");
 const { initializeSocket } = require("./sockets/socket");
 
 const startSimulator = require("./simulator/deviceSimulator");
+const startScheduler = require("./jobs/scheduler");
+
+const logger = require("./utils/logger");
 
 const PORT = process.env.PORT || 5000;
 
 const startServer = async () => {
-
     try {
-
         await connectDB();
 
         const server = http.createServer(app);
@@ -24,18 +25,18 @@ const startServer = async () => {
 
         startSimulator(io);
 
+        startScheduler();
+
         server.listen(PORT, () => {
-
-            console.log(`🚀 Server running on ${PORT}`);
-
+            logger.info("Server Started", {
+                Port: PORT,
+                Environment: process.env.NODE_ENV,
+            });
         });
-
-    } catch (err) {
-
-        console.log(err);
-
+    } catch (error) {
+        logger.error("Server Startup Failed", error);
+        process.exit(1);
     }
-
 };
 
 startServer();
