@@ -5,6 +5,8 @@ const compression = require("compression");
 const cookieParser = require("cookie-parser");
 const morgan = require("morgan");
 
+const deviceRoutes = require("./routes/device.routes");
+
 const errorMiddleware = require("./middleware/errorMiddleware");
 
 require("dotenv").config();
@@ -24,7 +26,9 @@ app.use(cookieParser());
 app.use(morgan("dev"));
 
 app.use(errorMiddleware);
-    
+
+app.use("/api/v1/devices", deviceRoutes);
+
 app.get("/", (req, res) => {
     res.json({
         success: true,
