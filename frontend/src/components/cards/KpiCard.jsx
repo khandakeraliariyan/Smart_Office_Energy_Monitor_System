@@ -1,23 +1,31 @@
-const KpiCard = ({ title, value, unit }) => {
-    return (
-        <div className="bg-slate-900 rounded-xl border border-slate-800 p-6">
+const KpiCard = ({ title, value, unit, color }) => {
 
-            <p className="text-slate-400 text-sm">
+    return (
+
+        <div className="rounded-xl border border-slate-800 bg-slate-900 p-6 hover:scale-[1.02] transition">
+
+            <p className="text-slate-400">
+
                 {title}
+
             </p>
 
-            <h2 className="text-4xl font-bold mt-3">
+            <h2 className={`text-4xl font-bold mt-4 ${color}`}>
 
                 {value}
 
-                <span className="text-xl ml-2">
+                <span className="text-xl ml-1">
+
                     {unit}
+
                 </span>
 
             </h2>
 
         </div>
+
     );
+
 };
 
 export default KpiCard;

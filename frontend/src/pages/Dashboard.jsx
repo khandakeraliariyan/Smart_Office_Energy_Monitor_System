@@ -52,21 +52,25 @@ const Dashboard = () => {
                         title="Total Power"
                         value={dashboard.totalPower}
                         unit="W"
+                        color="text-green-400"
                     />
 
                     <KpiCard
                         title="Active Devices"
                         value={activeDevices}
+                        color="text-blue-400"
                     />
 
                     <KpiCard
                         title="Rooms"
                         value={dashboard.rooms.length}
+                        color="text-purple-400"
                     />
 
                     <KpiCard
                         title="Active Alerts"
                         value={dashboard.alerts.length}
+                        color="text-red-400"
                     />
 
                 </section>
