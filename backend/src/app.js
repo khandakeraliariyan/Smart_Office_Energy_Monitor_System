@@ -5,6 +5,8 @@ const compression = require("compression");
 const cookieParser = require("cookie-parser");
 const morgan = require("morgan");
 
+const errorMiddleware = require("./middleware/errorMiddleware");
+
 require("dotenv").config();
 
 const app = express();
@@ -21,6 +23,8 @@ app.use(cookieParser());
 
 app.use(morgan("dev"));
 
+app.use(errorMiddleware);
+    
 app.get("/", (req, res) => {
     res.json({
         success: true,
