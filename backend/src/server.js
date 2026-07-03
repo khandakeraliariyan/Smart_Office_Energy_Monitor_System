@@ -4,13 +4,11 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 const app = require("./app");
-
 const connectDB = require("./config/db");
 
 const { initializeSocket } = require("./sockets/socket");
 
 const startSimulator = require("./simulator/deviceSimulator");
-
 const startScheduler = require("./jobs/scheduler");
 
 const logger = require("./utils/logger");
@@ -30,11 +28,13 @@ const startServer = async () => {
         startScheduler();
 
         server.listen(PORT, () => {
-            console.log(`🚀 Server running on ${PORT}`);
+            logger.info("Server Started", {
+                Port: PORT,
+                Environment: process.env.NODE_ENV,
+            });
         });
     } catch (error) {
         logger.error("Server Startup Failed", error);
-
         process.exit(1);
     }
 };
