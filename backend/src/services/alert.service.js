@@ -34,7 +34,6 @@ class AlertService {
 
         const currentHour = new Date().getHours();
 
-        // Office hours: 9AM - 5PM
         if (currentHour >= 9 && currentHour < 17) {
             return;
         }
@@ -43,28 +42,50 @@ class AlertService {
             status: true,
         }).populate("room");
 
+        if (!activeDevices.length) return;
+
+        const existingAlerts = await Alert.find({
+            type: "AFTER_HOURS",
+            resolved: false,
+        });
+
+        const existingMessages = new Set(
+            existingAlerts.map(alert => alert.message)
+        );
+
+        const newAlerts = [];
+
         for (const device of activeDevices) {
 
-            const existingAlert = await Alert.findOne({
-                type: "AFTER_HOURS",
-                resolved: false,
-                room: device.room._id,
-                message: {
-                    $regex: device.name,
-                    $options: "i",
-                },
-            });
+            const message =
+                `${device.name} in ${device.room.name} is still ON.`;
 
-            if (existingAlert) continue;
+            if (existingMessages.has(message)) {
+                continue;
+            }
 
-            await Alert.create({
+            newAlerts.push({
+
                 type: "AFTER_HOURS",
+
                 title: "Device Active After Office Hours",
-                message: `${device.name} in ${device.room.name} is still ON.`,
+
+                message,
+
                 room: device.room._id,
-                severity: "HIGH",
+
+                severity: "HIGH"
+
             });
+
         }
+
+        if (newAlerts.length) {
+
+            await Alert.insertMany(newAlerts);
+
+        }
+
     }
 }
 

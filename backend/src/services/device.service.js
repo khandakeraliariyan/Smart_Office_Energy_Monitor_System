@@ -12,16 +12,21 @@ class DeviceService {
 
     async updateStatus(id, status) {
 
-        return await Device.findByIdAndUpdate(
-            id,
-            {
-                status,
-                lastChanged: new Date()
-            },
-            {
-                new: true
-            }
-        ).populate("room");
+        const device = await Device.findById(id);
+
+        if (!device) return null;
+
+        device.status = status;
+
+        device.currentPower = status
+            ? device.powerRating
+            : 0;
+
+        device.lastChanged = new Date();
+
+        await device.save();
+
+        return device.populate("room");
 
     }
 
