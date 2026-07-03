@@ -7,17 +7,38 @@ class DeviceService {
     }
 
     async getDeviceById(id) {
-        return await Device.findById(id);
+        return await Device.findById(id).populate("room");
     }
 
-    async updateDevice(id, data) {
+    async updateStatus(id, status) {
+
         return await Device.findByIdAndUpdate(
             id,
-            data,
+            {
+                status,
+                lastChanged: new Date()
+            },
             {
                 new: true
             }
-        );
+        ).populate("room");
+
+    }
+
+    async getDevicesByRoom(roomId) {
+
+        return await Device.find({
+            room: roomId
+        });
+
+    }
+
+    async countActiveDevices() {
+
+        return await Device.countDocuments({
+            status: true
+        });
+
     }
 
 }
