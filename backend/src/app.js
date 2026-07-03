@@ -12,6 +12,8 @@ const roomRoutes = require("./routes/room.routes");
 const dashboardRoutes = require("./routes/dashboard.routes");
 const powerRoutes = require("./routes/power.routes");
 const alertRoutes = require("./routes/alert.routes");
+const analyticsRoutes = require("./routes/analytics.routes");
+const aiRoutes = require("./routes/ai.routes");
 
 const app = express();
 
@@ -35,6 +37,8 @@ app.use("/api/v1/rooms", roomRoutes);
 app.use("/api/v1/dashboard", dashboardRoutes);
 app.use("/api/v1/power", powerRoutes);
 app.use("/api/v1/alerts", alertRoutes);
+app.use("/api/v1/analytics", analyticsRoutes);
+app.use("/api/v1/ai", aiRoutes);
 
 app.use(errorMiddleware);
 
