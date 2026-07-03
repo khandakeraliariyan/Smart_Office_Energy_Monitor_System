@@ -2,6 +2,16 @@ const mongoose = require("mongoose");
 
 const alertSchema = new mongoose.Schema(
     {
+        type: {
+            type: String,
+            enum: [
+                "AFTER_HOURS",
+                "ROOM_ACTIVE",
+                "HIGH_POWER"
+            ],
+            required: true
+        },
+
         title: {
             type: String,
             required: true
@@ -19,8 +29,8 @@ const alertSchema = new mongoose.Schema(
 
         severity: {
             type: String,
-            enum: ["Low", "Medium", "High"],
-            default: "Low"
+            enum: ["LOW", "MEDIUM", "HIGH"],
+            default: "LOW"
         },
 
         resolved: {
