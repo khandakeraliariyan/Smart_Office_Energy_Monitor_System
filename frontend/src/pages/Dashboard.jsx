@@ -2,7 +2,7 @@ import Navbar from "../components/layout/Navbar";
 import KpiCard from "../components/cards/KpiCard";
 import Loader from "../components/common/Loader";
 import OfficeLayout from "../components/office/OfficeLayout";
-
+import PowerChart from "../components/charts/PowerChart";
 import useDashboard from "../hooks/useDashboard";
 
 const Dashboard = () => {
@@ -74,7 +74,13 @@ const Dashboard = () => {
                         color="text-red-400"
                     />
 
-                    <OfficeLayout rooms={dashboard.rooms} />
+                    <OfficeLayout
+                        rooms={dashboard.rooms}
+                    />
+
+                    <PowerChart
+                        history={dashboard.powerHistory}
+                    />
 
                 </section>
 
