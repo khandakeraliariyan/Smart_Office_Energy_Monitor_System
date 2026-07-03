@@ -1,11 +1,9 @@
-import {
-    FaExclamationTriangle
-} from "react-icons/fa";
+import { FaExclamationTriangle } from "react-icons/fa";
 
 const colors = {
-    HIGH: "border-red-500 bg-red-500/10",
-    MEDIUM: "border-yellow-500 bg-yellow-500/10",
-    LOW: "border-blue-500 bg-blue-500/10",
+    HIGH: "border-red-500 bg-red-500/10 shadow-red-500/20",
+    MEDIUM: "border-yellow-500 bg-yellow-500/10 shadow-yellow-500/20",
+    LOW: "border-blue-500 bg-blue-500/10 shadow-blue-500/20",
 };
 
 const AlertCard = ({ alert }) => {
@@ -13,14 +11,12 @@ const AlertCard = ({ alert }) => {
     return (
 
         <div
-            className={`rounded-xl border p-4 ${colors[alert.severity]}`}
+            className={`rounded-xl border shadow-lg p-4 ${colors[alert.severity]}`}
         >
 
             <div className="flex items-center gap-3">
 
-                <FaExclamationTriangle
-                    className="text-red-400 text-xl"
-                />
+                <FaExclamationTriangle className="text-red-400 text-xl" />
 
                 <div>
 
@@ -50,8 +46,7 @@ const AlertCard = ({ alert }) => {
 
                 <span>
 
-                    {new Date(alert.createdAt)
-                        .toLocaleTimeString()}
+                    {new Date(alert.createdAt).toLocaleTimeString()}
 
                 </span>
 

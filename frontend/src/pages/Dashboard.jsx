@@ -4,6 +4,7 @@ import KpiCard from "../components/cards/KpiCard";
 import OfficeLayout from "../components/office/OfficeLayout";
 import PowerChart from "../components/charts/PowerChart";
 import DeviceGrid from "../components/devices/DeviceGrid";
+import AlertPanel from "../components/alerts/AlertPanel";
 import useDashboard from "../hooks/useDashboard";
 
 import { updateDeviceStatus } from "../services/device.service";
@@ -58,8 +59,6 @@ const Dashboard = () => {
 
             <main className="bg-slate-950 min-h-screen p-8 space-y-10">
 
-                {/* Header */}
-
                 <section>
 
                     <h1 className="text-4xl font-bold">
@@ -75,8 +74,6 @@ const Dashboard = () => {
                     </p>
 
                 </section>
-
-                {/* KPI Cards */}
 
                 <section className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
 
@@ -107,23 +104,38 @@ const Dashboard = () => {
 
                 </section>
 
-                {/* Office Layout */}
+                <section className="grid xl:grid-cols-3 gap-6">
 
-                <OfficeLayout
-                    rooms={dashboard.rooms}
-                />
+                    <div className="xl:col-span-2">
 
-                {/* Power Chart */}
+                        <OfficeLayout
+                            rooms={dashboard.rooms}
+                        />
+
+                    </div>
+
+                    <AlertPanel
+                        alerts={dashboard.alerts}
+                    />
+
+                </section>
 
                 <PowerChart
                     history={dashboard.powerHistory}
                 />
 
-                {/* Device Grid */}
+                <DeviceGrid
+                    devices={dashboard.devices}
+                    onToggle={handleToggle}
+                />
 
                 <DeviceGrid
                     devices={dashboard.devices}
                     onToggle={handleToggle}
+                />
+
+                <AlertPanel
+                    alerts={dashboard.alerts}
                 />
 
             </main>
