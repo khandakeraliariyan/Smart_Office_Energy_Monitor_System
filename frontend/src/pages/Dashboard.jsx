@@ -1,16 +1,52 @@
+import Navbar from "../components/layout/Navbar";
+import KpiCard from "../components/cards/KpiCard";
+
 const Dashboard = () => {
     return (
-        <div className="p-8">
+        <>
+            <Navbar />
 
-            <h1 className="text-4xl font-bold">
-                Smart Office Dashboard
-            </h1>
+            <main className="p-8 space-y-8">
 
-            <p className="mt-2 text-slate-400">
-                Real-time Energy Monitoring System
-            </p>
+                <section>
 
-        </div>
+                    <h2 className="text-3xl font-bold">
+                        Dashboard
+                    </h2>
+
+                    <p className="text-slate-400">
+                        Smart Office Energy Monitoring
+                    </p>
+
+                </section>
+
+                <section className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+
+                    <KpiCard
+                        title="Total Power"
+                        value="0"
+                        unit="W"
+                    />
+
+                    <KpiCard
+                        title="Active Devices"
+                        value="0"
+                    />
+
+                    <KpiCard
+                        title="Rooms"
+                        value="3"
+                    />
+
+                    <KpiCard
+                        title="Active Alerts"
+                        value="0"
+                    />
+
+                </section>
+
+            </main>
+        </>
     );
 };
 
