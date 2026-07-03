@@ -4,81 +4,68 @@ const Device = require("../models/Device");
 class AlertService {
 
     async getActiveAlerts() {
-
         return await Alert.find({
-            resolved: false
+            resolved: false,
         }).populate("room");
-
     }
 
     async createAlert(data) {
-
         return await Alert.create(data);
-
     }
 
     async resolveAlert(id) {
-
         return await Alert.findByIdAndUpdate(
             id,
-            {
-                resolved: true
-            },
-            {
-                new: true
-            }
+            { resolved: true },
+            { new: true }
         );
+    }
 
+    async checkAlerts() {
+        await this.checkAfterHours();
+
+        // Future Rules
+        // await this.checkHighPower();
+        // await this.checkRoomActivity();
+        // await this.checkPowerSpike();
     }
 
     async checkAfterHours() {
 
-        const hour = new Date().getHours();
+        const currentHour = new Date().getHours();
 
-        if (hour >= 9 && hour < 17) {
-
+        // Office hours: 9AM - 5PM
+        if (currentHour >= 9 && currentHour < 17) {
             return;
-
         }
 
         const activeDevices = await Device.find({
-            status: true
+            status: true,
         }).populate("room");
 
         for (const device of activeDevices) {
 
-            const exists = await Alert.findOne({
-
-                resolved: false,
-
+            const existingAlert = await Alert.findOne({
                 type: "AFTER_HOURS",
-
+                resolved: false,
+                room: device.room._id,
                 message: {
-                    $regex: device.name
-                }
-
+                    $regex: device.name,
+                    $options: "i",
+                },
             });
 
-            if (exists) continue;
+            if (existingAlert) continue;
 
             await Alert.create({
-
                 type: "AFTER_HOURS",
-
                 title: "Device Active After Office Hours",
-
                 message: `${device.name} in ${device.room.name} is still ON.`,
-
                 room: device.room._id,
-
-                severity: "HIGH"
-
+                severity: "HIGH",
             });
-
         }
-
     }
-
 }
 
 module.exports = new AlertService();

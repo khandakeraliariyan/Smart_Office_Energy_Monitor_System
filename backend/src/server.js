@@ -19,28 +19,18 @@ const PORT = process.env.PORT || 5000;
 
 const startServer = async () => {
     try {
-        // Connect MongoDB
         await connectDB();
 
-        // Create Express HTTP Server
         const server = http.createServer(app);
 
-        // Initialize Socket.IO
         const io = initializeSocket(server);
 
-        // Start Simulator
         startSimulator(io);
 
-        // Start Background Jobs
         startScheduler();
 
-        // Start Server
         server.listen(PORT, () => {
-            logger.info("Server Started", {
-                Environment: process.env.NODE_ENV,
-                Port: PORT,
-                URL: `http://localhost:${PORT}`,
-            });
+            console.log(`🚀 Server running on ${PORT}`);
         });
     } catch (error) {
         logger.error("Server Startup Failed", error);
