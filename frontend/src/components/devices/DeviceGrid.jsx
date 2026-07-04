@@ -38,7 +38,6 @@ const DeviceGrid = ({
     devices,
     onToggle,
 }) => {
-
     const roomGroups = rooms.map((room) => ({
         ...room,
         devices: devices.filter((device) => device.room?._id === room._id),
@@ -46,13 +45,13 @@ const DeviceGrid = ({
 
     return (
         <section className="space-y-5">
-            <div className="flex flex-wrap items-end justify-between gap-4">
+            <div className="surface-header">
                 <div>
                     <p className="eyebrow">Control</p>
                     <h2 className="section-title mt-1 text-xl sm:text-2xl">
                         Live Device Status Panel
                     </h2>
-                    <p className="mt-1 text-sm text-slate-400">
+                    <p className="surface-copy mt-1 text-sm">
                         Every device is organized by room and updates in real time
                     </p>
                 </div>
@@ -66,7 +65,7 @@ const DeviceGrid = ({
                 initial="hidden"
                 whileInView="show"
                 viewport={{ once: true, margin: "-60px" }}
-                className="grid gap-5 xl:grid-cols-3"
+                className="grid gap-6 xl:grid-cols-3"
             >
                 {roomGroups.map((room, roomIndex) => {
                     const activeDevices = room.devices.filter((device) => device.status).length;
@@ -76,10 +75,10 @@ const DeviceGrid = ({
                         <motion.article
                             key={room._id}
                             variants={cardMotion}
-                            className="glass-card rounded-[1.75rem] p-5"
+                            className="glass-card metric-card rounded-2xl px-6 py-6 sm:px-7 sm:py-7"
                         >
                             <div className="flex items-start justify-between gap-4">
-                                <div>
+                                <div className="min-w-0 pr-2">
                                     <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">
                                         Room {roomIndex + 1}
                                     </p>
@@ -91,7 +90,7 @@ const DeviceGrid = ({
                                     </p>
                                 </div>
 
-                                <div className="rounded-2xl border border-emerald-400/15 bg-emerald-400/10 px-3 py-2 text-right">
+                                <div className="shrink-0 rounded-xl border border-emerald-400/15 bg-emerald-400/10 px-4 py-3 text-right">
                                     <p className="text-[10px] uppercase tracking-[0.22em] text-emerald-200/80">
                                         Load
                                     </p>
@@ -101,21 +100,21 @@ const DeviceGrid = ({
                                 </div>
                             </div>
 
-                            <div className="mt-4 flex items-center justify-between rounded-2xl border border-white/8 bg-white/[0.03] px-4 py-3 text-sm text-slate-300">
+                            <div className="mt-5 flex items-center justify-between rounded-xl border border-white/8 bg-white/[0.03] px-5 py-4 text-sm text-slate-300">
                                 <span>{activeDevices} / {room.devices.length} active</span>
                                 <span className="chip">
                                     Live
                                 </span>
                             </div>
 
-                            <div className="mt-5 grid grid-cols-2 gap-3">
+                            <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
                                 {room.devices.map((device) => {
                                     const isFan = device.type === "Fan";
 
                                     return (
                                         <div
                                             key={device._id}
-                                            className={`group rounded-2xl border p-3 transition duration-300 ${device.status
+                                            className={`group rounded-2xl border p-4 transition duration-300 sm:p-5 ${device.status
                                                 ? "border-white/15 bg-white/[0.06] shadow-[0_0_0_1px_rgba(255,255,255,0.04),0_18px_36px_rgba(14,165,233,0.12)]"
                                                 : "border-white/8 bg-black/20"
                                                 }`}
@@ -133,7 +132,7 @@ const DeviceGrid = ({
                                                     </p>
                                                 </div>
 
-                                                <div className={`flex h-11 w-11 items-center justify-center rounded-2xl border ${device.status ? "border-cyan-400/20 bg-cyan-400/10" : "border-white/10 bg-white/5"}`}>
+                                                <div className={`flex h-11 w-11 items-center justify-center rounded-xl border ${device.status ? "border-cyan-400/20 bg-cyan-400/10" : "border-white/10 bg-white/5"}`}>
                                                     {isFan ? (
                                                         <FaFan className={`text-lg ${device.status ? "animate-[spin_1.8s_linear_infinite] text-cyan-300" : "text-slate-500"}`} />
                                                     ) : (
@@ -142,7 +141,7 @@ const DeviceGrid = ({
                                                 </div>
                                             </div>
 
-                                            <div className="mt-4 flex items-center justify-between gap-3">
+                                            <div className="mt-5 flex items-center justify-between gap-3">
                                                 <div className={`flex items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold tracking-[0.18em] ${device.status ? "bg-emerald-400/10 text-emerald-300" : "bg-slate-800/80 text-slate-400"}`}>
                                                     {device.status ? "ON" : "OFF"}
                                                 </div>

@@ -12,10 +12,10 @@ const PowerMeter = ({ rooms, roomPower = {}, totalPower = 0, lastUpdated }) => {
     const lightCount = rooms.reduce((sum, room) => sum + room.devices.filter((device) => device.type === "Light").length, 0);
 
     return (
-        <section className="glass-panel relative flex flex-col overflow-hidden rounded-[1.75rem] border-cyan-400/15 p-5 sm:p-6">
+        <section className="glass-panel relative flex flex-col overflow-hidden rounded-2xl border-cyan-400/15 px-6 py-7 sm:px-8 sm:py-8">
             <div className="pointer-events-none absolute -right-16 -top-16 h-40 w-40 rounded-full bg-cyan-400/15 blur-[80px]" />
 
-            <div className="relative flex items-start justify-between gap-4">
+            <div className="relative flex flex-col items-center gap-4 text-center sm:flex-row sm:items-start sm:justify-between sm:text-left">
                 <div>
                     <p className="eyebrow text-cyan-200/80">
                         Live Power Meter
@@ -28,7 +28,7 @@ const PowerMeter = ({ rooms, roomPower = {}, totalPower = 0, lastUpdated }) => {
                     </p>
                 </div>
 
-                <div className="rounded-2xl border border-emerald-400/20 bg-emerald-400/10 px-3 py-2 text-right">
+                <div className="rounded-xl border border-emerald-400/20 bg-emerald-400/10 px-5 py-4 text-center sm:text-right">
                     <p className="text-[10px] uppercase tracking-[0.22em] text-emerald-200/80">
                         Status
                     </p>
@@ -42,13 +42,13 @@ const PowerMeter = ({ rooms, roomPower = {}, totalPower = 0, lastUpdated }) => {
                 </div>
             </div>
 
-            <div className="relative mt-5 rounded-2xl border border-white/8 bg-white/[0.03] p-4">
-                <div className="flex items-center justify-between text-xs uppercase tracking-[0.22em] text-slate-500">
+            <div className="relative mt-6 rounded-xl border border-white/8 bg-white/[0.03] px-5 py-5 text-center sm:px-6 sm:py-6">
+                <div className="flex flex-col items-center gap-1 text-xs uppercase tracking-[0.22em] text-slate-500 sm:flex-row sm:justify-between sm:gap-0">
                     <span>Room split</span>
                     <span>{lastUpdated ? new Date(lastUpdated).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) : "Auto refresh"}</span>
                 </div>
 
-                <div className="mt-4 space-y-4">
+                <div className="mt-5 space-y-5">
                     {roomEntries.map((room, index) => {
                         const width = Math.max((room.value / maxValue) * 100, room.value > 0 ? 16 : 8);
 
@@ -72,18 +72,18 @@ const PowerMeter = ({ rooms, roomPower = {}, totalPower = 0, lastUpdated }) => {
                 </div>
             </div>
 
-            <div className="relative mt-5 grid grid-cols-3 gap-3 text-center">
-                <div className="rounded-2xl border border-white/10 bg-white/[0.03] px-3 py-4">
+            <div className="relative mt-6 grid grid-cols-3 gap-4 text-center">
+                <div className="rounded-xl border border-white/10 bg-white/[0.03] px-4 py-5">
                     <p className="text-[10px] uppercase tracking-[0.22em] text-slate-500">Rooms</p>
                     <p className="mt-2 text-lg font-bold text-slate-50">{rooms.length}</p>
                 </div>
-                <div className="rounded-2xl border border-white/10 bg-white/[0.03] px-3 py-4">
+                <div className="rounded-xl border border-white/10 bg-white/[0.03] px-4 py-5">
                     <p className="flex items-center justify-center gap-1.5 text-[10px] uppercase tracking-[0.22em] text-slate-500">
                         <FaFan className="text-cyan-300/70" /> Fans
                     </p>
                     <p className="mt-2 text-lg font-bold text-slate-50">{fanCount}</p>
                 </div>
-                <div className="rounded-2xl border border-white/10 bg-white/[0.03] px-3 py-4">
+                <div className="rounded-xl border border-white/10 bg-white/[0.03] px-4 py-5">
                     <p className="flex items-center justify-center gap-1.5 text-[10px] uppercase tracking-[0.22em] text-slate-500">
                         <FaLightbulb className="text-amber-300/70" /> Lights
                     </p>

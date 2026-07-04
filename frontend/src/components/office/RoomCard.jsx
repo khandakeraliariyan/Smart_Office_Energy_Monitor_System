@@ -1,7 +1,6 @@
 import DeviceIcon from "./DeviceIcon";
 
 const RoomCard = ({ room }) => {
-
     const lights = room.devices.filter(device => device.type === "Light");
     const fans = room.devices.filter(device => device.type === "Fan");
 
@@ -14,8 +13,8 @@ const RoomCard = ({ room }) => {
     ];
 
     return (
-        <div className="glass-card rounded-3xl p-5">
-            <div className="flex items-start justify-between gap-4">
+        <div className="glass-card metric-card rounded-2xl px-6 py-6 sm:px-7 sm:py-7">
+            <div className="flex flex-col items-center gap-5 text-center">
                 <div>
                     <h2 className="text-lg font-bold tracking-tight text-slate-50">
                         {room.name}
@@ -30,13 +29,13 @@ const RoomCard = ({ room }) => {
                 </span>
             </div>
 
-            <div className="mt-6 grid grid-cols-3 gap-4 place-items-center">
+            <div className="mt-6 grid grid-cols-3 gap-5 place-items-center">
                 {deviceSlots.map((device, index) => (
                     <div
                         key={device?._id || index}
                         className={index === 3 ? "col-start-2 flex flex-col items-center gap-2" : "flex flex-col items-center gap-2"}
                     >
-                        <div className="flex h-20 w-20 items-center justify-center rounded-3xl border border-white/10 bg-black/20">
+                        <div className="flex h-20 w-20 items-center justify-center rounded-xl border border-white/10 bg-black/20">
                             {device ? (
                                 <DeviceIcon device={device} />
                             ) : (
@@ -45,13 +44,13 @@ const RoomCard = ({ room }) => {
                         </div>
 
                         {device && (
-                            <span className="text-sm text-slate-300">
+                            <span className="text-center text-sm text-slate-300">
                                 {device.name}
                             </span>
                         )}
 
                         {!device && (
-                            <span className="text-sm text-slate-500">
+                            <span className="text-center text-sm text-slate-500">
                                 Empty
                             </span>
                         )}

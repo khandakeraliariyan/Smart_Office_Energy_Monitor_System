@@ -3,8 +3,8 @@ import { FaBolt } from "react-icons/fa";
 
 const Loader = () => {
     return (
-        <div className="flex min-h-screen items-center justify-center bg-[#05070f] text-slate-100">
-            <div className="flex flex-col items-center gap-5">
+        <div className="flex min-h-screen items-center justify-center bg-[#05070f] px-6 text-slate-100">
+            <div className="glass-panel center-stack rounded-2xl px-8 py-10 sm:px-10">
                 <div className="relative flex h-16 w-16 items-center justify-center">
                     <motion.span
                         animate={{ rotate: 360 }}

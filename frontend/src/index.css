@@ -27,8 +27,6 @@
 }
 
 * {
-    margin: 0;
-    padding: 0;
     box-sizing: border-box;
 }
 
@@ -37,6 +35,7 @@ body,
 #root {
     width: 100%;
     min-height: 100vh;
+    background: #05070f;
 }
 
 html {
@@ -44,11 +43,11 @@ html {
 }
 
 body {
+    margin: 0;
     background:
-        radial-gradient(ellipse 900px 500px at 12% -10%, rgba(99, 102, 241, 0.20), transparent 60%),
-        radial-gradient(ellipse 800px 500px at 90% 0%, rgba(34, 211, 238, 0.14), transparent 55%),
-        radial-gradient(ellipse 700px 600px at 100% 90%, rgba(16, 185, 129, 0.10), transparent 55%),
-        linear-gradient(180deg, #030411 0%, #05070f 45%, #030411 100%);
+        radial-gradient(ellipse 900px 460px at 18% -12%, rgba(99, 102, 241, 0.16), transparent 62%),
+        radial-gradient(ellipse 760px 420px at 92% 2%, rgba(34, 211, 238, 0.10), transparent 58%),
+        linear-gradient(180deg, #050816 0%, #070a12 48%, #05070f 100%);
     background-attachment: fixed;
     color: #e5e7eb;
     font-family: var(--font-sans);
@@ -56,7 +55,16 @@ body {
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    letter-spacing: -0.011em;
+    letter-spacing: 0;
+    line-height: 1.5;
+}
+
+body,
+button,
+input,
+textarea,
+select {
+    font: inherit;
 }
 
 h1, h2, h3, h4 {
@@ -80,30 +88,39 @@ h1, h2, h3, h4 {
 }
 
 ::-webkit-scrollbar-track {
-    background: transparent;
+    background: #05070f;
 }
 
 /* ---------- Design system utilities ---------- */
 
 @layer components {
+    .app-shell {
+        position: relative;
+        z-index: 0;
+        overflow-x: clip;
+        min-height: 100vh;
+    }
+
     .glass-panel {
-        background: linear-gradient(180deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.02));
-        border: 1px solid rgba(255, 255, 255, 0.09);
+        background: linear-gradient(180deg, rgba(15, 23, 42, 0.82), rgba(15, 23, 42, 0.58));
+        border: 1px solid rgba(148, 163, 184, 0.16);
+        border-radius: 1.25rem;
         backdrop-filter: blur(20px);
         -webkit-backdrop-filter: blur(20px);
         box-shadow:
             0 1px 0 0 rgba(255, 255, 255, 0.06) inset,
-            0 24px 60px -20px rgba(2, 6, 23, 0.65);
+            0 18px 42px -24px rgba(2, 6, 23, 0.85);
     }
 
     .glass-card {
-        background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.018));
-        border: 1px solid rgba(255, 255, 255, 0.08);
+        background: rgba(15, 23, 42, 0.62);
+        border: 1px solid rgba(148, 163, 184, 0.14);
+        border-radius: 1rem;
         backdrop-filter: blur(16px);
         -webkit-backdrop-filter: blur(16px);
         box-shadow:
             0 1px 0 0 rgba(255, 255, 255, 0.05) inset,
-            0 16px 40px -18px rgba(2, 6, 23, 0.6);
+            0 12px 30px -24px rgba(2, 6, 23, 0.85);
         transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
     }
 
@@ -200,7 +217,7 @@ h1, h2, h3, h4 {
     .section-title {
         font-family: var(--font-display);
         font-weight: 700;
-        letter-spacing: -0.02em;
+        letter-spacing: 0;
         color: #f8fafc;
     }
 
@@ -208,5 +225,58 @@ h1, h2, h3, h4 {
         background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.35'/%3E%3C/svg%3E");
         opacity: 0.05;
         mix-blend-mode: overlay;
+    }
+
+    .section-shell {
+        border-radius: 1.25rem;
+        padding: clamp(1.5rem, 2vw, 2rem);
+    }
+
+    .content-inset {
+        padding: 1rem;
+    }
+
+    @media (min-width: 640px) {
+        .content-inset {
+            padding: 1.25rem;
+        }
+    }
+
+    .surface-header {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+    }
+
+    .surface-title {
+        font-family: var(--font-display);
+        font-size: 1.05rem;
+        font-weight: 700;
+        letter-spacing: 0;
+        color: #f8fafc;
+    }
+
+    .surface-copy {
+        margin-top: 0.35rem;
+        max-width: 48rem;
+        color: #94a3b8;
+    }
+
+    .center-stack {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+    }
+
+    .metric-card {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 1rem;
+        min-height: 100%;
     }
 }

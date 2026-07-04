@@ -5,11 +5,11 @@ const KpiCard = ({ title, value, unit, color = "text-slate-50" }) => {
         <motion.div
             whileHover={{ y: -4 }}
             transition={{ type: "spring", stiffness: 280, damping: 20 }}
-            className="glass-card relative overflow-hidden rounded-3xl p-5 sm:p-6"
+            className="glass-card metric-card relative overflow-hidden rounded-2xl px-6 py-6 sm:px-7 sm:py-7"
         >
             <div className="pointer-events-none absolute -right-10 -top-10 h-32 w-32 rounded-full bg-brand-500/10 blur-3xl" />
 
-            <div className="relative mb-5 flex items-center justify-between">
+            <div className="relative flex items-center justify-between gap-3">
                 <p className="text-sm font-medium uppercase tracking-[0.2em] text-slate-400">
                     {title}
                 </p>

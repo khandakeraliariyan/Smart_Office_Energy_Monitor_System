@@ -28,15 +28,15 @@ const AlertCard = ({ alert }) => {
     return (
         <motion.article
             variants={cardMotion}
-            className={`rounded-2xl border p-4 shadow-[0_16px_35px_rgba(2,6,23,0.28)] backdrop-blur-sm ${colors[alert.severity] || colors.LOW}`}
+            className={`rounded-xl border px-5 py-5 shadow-[0_16px_35px_rgba(2,6,23,0.28)] backdrop-blur-sm sm:px-6 sm:py-6 ${colors[alert.severity] || colors.LOW}`}
         >
-            <div className="flex items-start gap-3">
-                <div className={`mt-0.5 flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border ${iconColors[alert.severity] || iconColors.LOW}`}>
+            <div className="flex flex-col items-center gap-4 text-center sm:flex-row sm:items-start sm:text-left">
+                <div className={`mt-0.5 flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border ${iconColors[alert.severity] || iconColors.LOW}`}>
                     <FaExclamationTriangle className="text-lg" />
                 </div>
 
                 <div className="min-w-0 flex-1 space-y-2">
-                    <div className="flex flex-wrap items-center gap-2">
+                    <div className="flex flex-wrap items-center justify-center gap-2 sm:justify-start">
                         <h3 className="text-base font-semibold tracking-tight text-slate-50">
                             {alert.title}
                         </h3>
@@ -49,7 +49,7 @@ const AlertCard = ({ alert }) => {
                         {alert.message}
                     </p>
 
-                    <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-slate-300/80">
+                    <div className="flex flex-wrap items-center justify-center gap-2 text-xs text-slate-300/80 sm:justify-between">
                         <span>
                             {alert.room?.name || "Office"}
                         </span>
