@@ -25,7 +25,7 @@ const startServer = async () => {
 
         startSimulator(io);
 
-        startScheduler();
+        startScheduler(io);
 
         server.listen(PORT, () => {
             logger.info("Server Started", {

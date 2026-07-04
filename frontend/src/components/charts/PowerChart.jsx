@@ -26,22 +26,22 @@ const PowerChart = ({ history }) => {
 
             }));
 
-                    const tickStyle = {
-                        fill: "#94a3b8",
-                        fontSize: 12,
-                    };
+    const tickStyle = {
+        fill: "#94a3b8",
+        fontSize: 12,
+    };
 
-                    const tooltipStyle = {
-                        backgroundColor: "rgba(15, 23, 42, 0.98)",
-                        border: "1px solid rgba(255, 255, 255, 0.08)",
-                        borderRadius: 14,
-                        color: "#e2e8f0",
-                        boxShadow: "0 20px 40px rgba(2, 6, 23, 0.45)",
-                    };
+    const tooltipStyle = {
+        backgroundColor: "rgba(15, 23, 42, 0.98)",
+        border: "1px solid rgba(255, 255, 255, 0.08)",
+        borderRadius: 14,
+        color: "#e2e8f0",
+        boxShadow: "0 20px 40px rgba(2, 6, 23, 0.45)",
+    };
 
     return (
 
-                        <div className="rounded-3xl border border-white/10 bg-slate-950/60 p-5 shadow-[0_20px_50px_rgba(2,6,23,0.3)] backdrop-blur-sm sm:p-6">
+                <div className="rounded-3xl border border-white/10 bg-slate-950/60 p-6 shadow-[0_20px_50px_rgba(2,6,23,0.3)] backdrop-blur-sm sm:p-7">
 
                             <div className="mb-5 flex items-center justify-between gap-3">
                                 <div>
@@ -57,45 +57,42 @@ const PowerChart = ({ history }) => {
                                 </span>
                             </div>
 
-            <ResponsiveContainer
-                width="100%"
-                                height={320}
-            >
+            <ResponsiveContainer width="100%" height={320}>
 
-                                <LineChart data={data} margin={{ top: 10, right: 20, left: 0, bottom: 0 }}>
+                <LineChart data={data} margin={{ top: 10, right: 20, left: 0, bottom: 0 }}>
 
-                                    <CartesianGrid stroke="rgba(148, 163, 184, 0.14)" strokeDasharray="4 12" vertical={false} />
+                    <CartesianGrid stroke="rgba(148, 163, 184, 0.14)" strokeDasharray="4 12" vertical={false} />
 
-                                    <XAxis
-                                        dataKey="time"
-                                        tick={tickStyle}
-                                        axisLine={false}
-                                        tickLine={false}
-                                        minTickGap={24}
-                                    />
+                    <XAxis
+                        dataKey="time"
+                        tick={tickStyle}
+                        axisLine={false}
+                        tickLine={false}
+                        minTickGap={24}
+                    />
 
-                                    <YAxis
-                                        tick={tickStyle}
-                                        axisLine={false}
-                                        tickLine={false}
-                                        width={44}
-                                    />
+                    <YAxis
+                        tick={tickStyle}
+                        axisLine={false}
+                        tickLine={false}
+                        width={44}
+                    />
 
-                                    <Tooltip contentStyle={tooltipStyle} labelStyle={{ color: "#cbd5e1" }} />
+                    <Tooltip contentStyle={tooltipStyle} labelStyle={{ color: "#cbd5e1" }} />
 
                     <Line
 
-                                        type="monotone"
+                        type="monotone"
 
                         dataKey="power"
 
-                                        stroke="url(#powerGradient)"
+                        stroke="url(#powerGradient)"
 
                         strokeWidth={3}
 
-                                        dot={false}
+                        dot={false}
 
-                                        activeDot={{ r: 5 }}
+                        activeDot={{ r: 5 }}
 
                     />
 
