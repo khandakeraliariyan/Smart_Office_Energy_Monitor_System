@@ -1,3 +1,7 @@
+const dotenv = require("dotenv");
+
+dotenv.config();
+
 const SimulatorService = require("../services/simulator.service");
 
 const startSimulator = (io) => {

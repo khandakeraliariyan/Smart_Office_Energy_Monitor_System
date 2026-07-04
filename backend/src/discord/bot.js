@@ -5,7 +5,8 @@ dotenv.config();
 
 const token = process.env.DISCORD_BOT_TOKEN;
 const guildId = process.env.DISCORD_GUILD_ID;
-const apiBaseUrl = process.env.DISCORD_BACKEND_URL || "http://localhost:5000";
+const port = process.env.PORT;
+const apiBaseUrl = process.env.DISCORD_BACKEND_URL;
 
 if (!token) {
     console.warn("⚠️ Discord bot disabled: DISCORD_BOT_TOKEN is not set.");
@@ -22,7 +23,7 @@ const client = new Client({
 });
 
 console.log("🔄 Attempting to log in Discord bot...");
-console.log("ℹ️ Message content intent is enabled for command parsing and greeting replies.");
+console.log("ℹ️ Message content intent is enabled so the bot can read commands in regular chat channels.");
 
 client.once(Events.ClientReady, (readyClient) => {
     console.log(`✅ Discord bot logged in as ${readyClient.user.tag}`);
@@ -40,18 +41,21 @@ client.on(Events.MessageCreate, async (message) => {
     if (message.author.bot) return;
 
     const content = message.content?.trim() || "";
-    const normalizedContent = content.toLowerCase();
+    const botId = client.user?.id;
+    const isMentioned = !!botId && message.mentions.users.has(botId);
+    const isPrefixCommand = content.toLowerCase().startsWith("!office");
+    const isOfficeMentionCommand = isMentioned && /\boffice\b/i.test(content);
 
-    console.log(`📨 Discord message received: ${content}`);
+    if (!isPrefixCommand && !isOfficeMentionCommand) return;
 
-    if (normalizedContent === "hello" || normalizedContent.startsWith("hello ")) {
-        await message.reply("Hello! How are you?");
+    const question = isPrefixCommand
+        ? content.replace(/^!office\s*/i, "").trim()
+        : content.replace(new RegExp(`<@!?${botId}>`, "i"), "").replace(/\boffice\b/i, "").trim();
+
+    if (!question) {
+        await message.reply("Try asking me about office status, alerts, or room power.");
         return;
     }
-
-    if (!content.startsWith("!office")) return;
-
-    const question = content.replace(/^!office\s*/i, "").trim();
 
     try {
         const response = await axios.get(`${apiBaseUrl}/api/v1/discord/ask`, {

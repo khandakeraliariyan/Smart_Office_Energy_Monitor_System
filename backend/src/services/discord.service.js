@@ -32,7 +32,8 @@ class DiscordService {
         const totalPower = dashboardData?.totalPower ?? 0;
         const roomPower = dashboardData?.roomPower ?? {};
         const activeAlerts = dashboardData?.alerts ?? [];
-        const deviceCount = dashboardData?.devices?.length ?? 0;
+        const devices = dashboardData?.devices ?? [];
+        const deviceCount = devices.length;
 
         const roomSummary = Object.entries(roomPower)
             .map(([room, power]) => `${room}: ${power}W`)
@@ -43,16 +44,53 @@ class DiscordService {
             : "No active alerts";
 
         if (normalizedQuestion.includes("alert")) {
-            return `Current office alert status: ${alertSummary}.`;
+            return `🚨 Alert update: ${alertSummary}.`;
+        }
+
+        if (normalizedQuestion.includes("device") && normalizedQuestion.includes("status")) {
+            const rooms = {};
+
+            devices.forEach((device) => {
+                const roomName = device?.room?.name || "Unknown Room";
+                if (!rooms[roomName]) rooms[roomName] = [];
+                rooms[roomName].push(device);
+            });
+
+            const roomDeviceBreakdown = Object.entries(rooms)
+                .map(([roomName, roomDevices]) => {
+                    const deviceLines = roomDevices
+                        .map((device) => {
+                            const statusEmoji = device?.status ? "●" : "○";
+                            const deviceName = device?.name || "Unnamed device";
+                            return `   • ${deviceName}  ${statusEmoji} ${device?.status ? "ON" : "OFF"}`;
+                        })
+                        .join("\n");
+
+                    return `- **${roomName}:**\n${deviceLines}`;
+                })
+                .join("\n");
+
+            return `📱 Device status update:\n\n${roomDeviceBreakdown || "- **No devices found**"}`;
         }
 
         if (normalizedQuestion.includes("room") || normalizedQuestion.includes("power")) {
-            return `Office power overview: total usage is ${totalPower}W. Room breakdown: ${roomSummary || "no rooms reported"}.`;
+            const roomEntries = Object.entries(roomPower);
+            const roomBreakdown = roomEntries.length
+                ? roomEntries
+                    .map(([room, power]) => `- **${room}:** ${power} Watts`)
+                    .join("\n")
+                : "- **No room data available**";
+
+            const alertMessage = activeAlerts.length
+                ? `⚠️ There are ${activeAlerts.length} active alert(s) currently.`
+                : "✅ There are no active alerts, so everything seems to be running as expected.";
+
+            return `⚡ The office is currently using **${totalPower} Watts** of power.\n\n🏢 Here's the breakdown by room:\n${roomBreakdown}\n\n${alertMessage}`;
         }
 
         const fallback = aiInsight && typeof aiInsight === "string"
             ? aiInsight.trim()
-            : `The office currently has ${deviceCount} connected devices, ${activeAlerts.length} active alerts, and ${totalPower}W of total power usage.`;
+            : `🏢 Office snapshot: ${deviceCount} connected devices, ${activeAlerts.length} active alerts, and ${totalPower}W total power usage.`;
 
         return fallback;
     }
