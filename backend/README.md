@@ -1,253 +1,114 @@
-# Smart Office Energy Monitoring System - Backend
+# Backend README
 
-Backend service for the **Smart Office Energy Monitoring System** built for the IUT RS Techathon.
+This backend powers the smart office energy monitoring system. It exposes REST APIs for devices, rooms, analytics, alerts, and AI insights while also broadcasting live updates to the frontend over Socket.IO.
 
-This backend provides REST APIs, real-time communication using Socket.IO, device simulation, power monitoring, alert management, and data persistence using MongoDB.
+## What the backend does
 
----
+- Serves the dashboard and analytics API
+- Persists office and device data in MongoDB
+- Simulates device activity and power consumption
+- Triggers alert checks and stores power history
+- Provides AI-generated office summaries using Gemini
+- Runs a Discord bot integration for notifications
 
-## Tech Stack
+## Tech stack
 
 - Node.js
 - Express.js
-- MongoDB Atlas
-- Mongoose
+- MongoDB + Mongoose
 - Socket.IO
 - Node Cron
 - Joi
-- Helmet
-- Morgan
-- Compression
-- Cookie Parser
+- Helmet, CORS, compression, morgan
 
----
+## Project structure
 
-## Project Structure
-
-```
+```text
 src/
-│
-├── config/
-│   └── db.js
-│
-├── constants/
-│   └── socketEvents.js
-│
-├── controllers/
-│   ├── alert.controller.js
-│   ├── dashboard.controller.js
-│   ├── device.controller.js
-│   ├── power.controller.js
-│   └── room.controller.js
-│
-├── jobs/
-│   └── scheduler.js
-│
-├── middleware/
-│   ├── errorMiddleware.js
-│   └── validate.js
-│
-├── models/
-│   ├── Alert.js
-│   ├── Device.js
-│   ├── PowerLog.js
-│   └── Room.js
-│
-├── routes/
-│   ├── alert.routes.js
-│   ├── dashboard.routes.js
-│   ├── device.routes.js
-│   ├── power.routes.js
-│   └── room.routes.js
-│
-├── services/
-│   ├── alert.service.js
-│   ├── dashboard.service.js
-│   ├── device.service.js
-│   ├── power.service.js
-│   ├── room.service.js
-│   └── simulator.service.js
-│
-├── simulator/
-│   └── deviceSimulator.js
-│
-├── sockets/
-│   └── socket.js
-│
-├── utils/
-│   ├── apiResponse.js
-│   ├── asyncHandler.js
-│   └── logger.js
-│
-├── app.js
-└── server.js
+  app.js                 # Express app setup
+  server.js              # Server bootstrap and socket startup
+  config/                # Database connection
+  controllers/           # API request handlers
+  routes/                # API endpoints
+  services/              # Business logic
+  models/                # Mongoose schemas
+  sockets/               # Socket.IO setup
+  simulator/             # Device simulation logic
+  jobs/                  # Scheduled background jobs
+  discord/               # Discord bot integration
+  utils/                 # Helpers and logging
 ```
 
----
+## Environment variables
 
-## Features
-
-- RESTful API
-- Real-time updates using Socket.IO
-- Smart device simulator
-- Room management
-- Device management
-- Power monitoring
-- Alert engine
-- Background scheduler
-- Historical power logging
-- Dashboard API
-- Modular service-based architecture
-
----
-
-## API Endpoints
-
-### Dashboard
-
-| Method | Endpoint |
-|---------|----------|
-| GET | `/api/v1/dashboard` |
-
----
-
-### Devices
-
-| Method | Endpoint |
-|---------|----------|
-| GET | `/api/v1/devices` |
-| GET | `/api/v1/devices/:id` |
-| PATCH | `/api/v1/devices/:id/status` |
-
----
-
-### Rooms
-
-| Method | Endpoint |
-|---------|----------|
-| GET | `/api/v1/rooms` |
-
----
-
-### Power
-
-| Method | Endpoint |
-|---------|----------|
-| GET | `/api/v1/power` |
-
----
-
-### Alerts
-
-| Method | Endpoint |
-|---------|----------|
-| GET | `/api/v1/alerts` |
-
----
-
-## Environment Variables
-
-Create a `.env` file inside the backend folder.
+Create a `.env` file in this folder:
 
 ```env
 PORT=5000
-
 NODE_ENV=development
-
 MONGO_URI=your_mongodb_connection_string
+GEMINI_API_KEY=your_gemini_api_key
+GEMINI_MODEL=gemini-2.5-flash-lite
 ```
-
----
 
 ## Installation
 
-Clone the repository
-
-```bash
-git clone <repository-url>
-```
-
-Go to backend
-
 ```bash
 cd backend
-```
-
-Install dependencies
-
-```bash
 npm install
 ```
 
----
+## Run locally
 
-## Seed Database
-
-```bash
-npm run seed
-```
-
-This creates:
-
-- 3 Rooms
-- 15 Devices
-- Default office configuration
-
----
-
-## Run Development Server
+### Development mode
 
 ```bash
 npm run dev
 ```
 
-Server starts at
-
-```
-http://localhost:5000
-```
-
----
-
-## Production
+### Production mode
 
 ```bash
 npm start
 ```
 
----
+The API will run at `http://localhost:5000`.
 
-## Scheduler
+## Seed demo data
 
-A background scheduler runs every minute and:
+```bash
+npm run seed
+```
 
-- Checks alert rules
-- Saves power snapshots
-- Generates historical power logs
+This populates sample rooms, devices, and office configuration data for the dashboard.
 
----
+## Main API groups
 
-## Simulator
+The backend exposes these API areas under `/api/v1`:
 
-The simulator runs automatically.
+- `/devices` - device data and status updates
+- `/rooms` - room information
+- `/dashboard` - summary dashboard payload
+- `/power` - power usage and power history
+- `/alerts` - alert listing and state
+- `/analytics` - analytics metrics
+- `/ai` - AI-generated insights
+- `/discord` - Discord integration routes
 
-It periodically:
+## Background services
 
-- Selects devices
-- Updates ON/OFF status
-- Calculates power
-- Emits Socket.IO events
-- Triggers alert checks
+When the server starts, it also launches:
 
----
+- a device simulator that updates office device activity
+- a scheduler that checks alerts and logs power snapshots
+- Socket.IO event broadcasting for live updates
 
-## Socket.IO Events
+## Useful scripts
 
-| Event |
-|-------|
-| deviceUpdated |
-| powerUpdated |
-| alertUpdated |
+- `npm run dev` - start with nodemon
+- `npm start` - start the production server
+- `npm run seed` - load sample data
+- `npm run discord:bot` - run the Discord bot separately
 | dashboardUpdated |
 
 ---
