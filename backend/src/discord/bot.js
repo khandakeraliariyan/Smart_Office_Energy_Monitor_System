@@ -192,8 +192,8 @@ if (!token) {
 
             if (command === "insight") {
                 const response = await axios.get(`${baseUrl}/ai`);
-                const data = response?.data?.data || {};
-                const insight = data?.insight || data?.answer || "No insight available.";
+                const data = response?.data?.data;
+                const insight = (typeof data === "string" ? data : data?.insight || data?.answer) || "No insight available.";
                 await message.reply({ embeds: [buildDiscordEmbed("🤖 AI Insight", insight, 0x14B8A6, [], "AI recommendation")] });
                 return;
             }
