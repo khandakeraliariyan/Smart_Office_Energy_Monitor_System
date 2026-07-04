@@ -14,6 +14,7 @@ const powerRoutes = require("./routes/power.routes");
 const alertRoutes = require("./routes/alert.routes");
 const analyticsRoutes = require("./routes/analytics.routes");
 const aiRoutes = require("./routes/ai.routes");
+const discordRoutes = require("./routes/discord.routes");
 
 const app = express();
 
@@ -39,6 +40,7 @@ app.use("/api/v1/power", powerRoutes);
 app.use("/api/v1/alerts", alertRoutes);
 app.use("/api/v1/analytics", analyticsRoutes);
 app.use("/api/v1/ai", aiRoutes);
+app.use("/api/v1/discord", discordRoutes);
 
 app.use(errorMiddleware);
 

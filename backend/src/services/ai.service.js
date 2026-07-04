@@ -10,7 +10,7 @@ const genAI = new GoogleGenerativeAI(
 
 class AIService {
 
-    async generateInsight() {
+    async generateInsight(question = "") {
 
         const power =
             await PowerService.getCurrentPowerUsage();
@@ -19,7 +19,10 @@ class AIService {
             await AlertService.getActiveAlerts();
 
         const prompt = `
-You are an energy efficiency expert.
+You are an energy efficiency expert helping an office support bot.
+
+User Question:
+${question || "Give a general office status update"}
 
 Current Total Power:
 ${power.totalPower} W
@@ -30,13 +33,7 @@ ${JSON.stringify(power.roomPower)}
 Active Alerts:
 ${alerts.map(a => a.message).join("\n")}
 
-Provide:
-
-1. Current office condition
-2. Energy efficiency advice
-3. Potential issue
-
-Maximum 120 words.
+Provide a concise answer in plain English, max 120 words.
 `;
 
         const model =

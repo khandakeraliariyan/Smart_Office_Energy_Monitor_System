@@ -10,6 +10,7 @@ const { initializeSocket } = require("./sockets/socket");
 
 const startSimulator = require("./simulator/deviceSimulator");
 const startScheduler = require("./jobs/scheduler");
+require("./discord/bot");
 
 const logger = require("./utils/logger");
 
