@@ -1,5 +1,37 @@
 import { FaFan, FaLightbulb } from "react-icons/fa";
-import DeviceIcon from "../office/DeviceIcon";
+import { motion } from "framer-motion";
+
+const gridMotion = {
+    hidden: {},
+    show: { transition: { staggerChildren: 0.06 } },
+};
+
+const cardMotion = {
+    hidden: { opacity: 0, y: 16 },
+    show: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } },
+};
+
+const ToggleSwitch = ({ checked, onChange }) => (
+    <button
+        type="button"
+        role="switch"
+        aria-checked={checked}
+        onClick={onChange}
+        className={`relative h-7 w-12 shrink-0 rounded-full border transition-colors duration-300 ${checked
+            ? "border-emerald-400/40 bg-emerald-500/30"
+            : "border-white/10 bg-white/10"
+            }`}
+    >
+        <motion.span
+            layout
+            transition={{ type: "spring", stiffness: 500, damping: 32 }}
+            className={`absolute top-0.5 h-6 w-6 rounded-full shadow-md ${checked
+                ? "left-[calc(100%-1.55rem)] bg-emerald-300 shadow-[0_0_12px_rgba(52,211,153,0.7)]"
+                : "left-0.5 bg-slate-300"
+                }`}
+        />
+    </button>
+);
 
 const DeviceGrid = ({
     rooms,
@@ -13,39 +45,45 @@ const DeviceGrid = ({
     }));
 
     return (
-
         <section className="space-y-5">
-
             <div className="flex flex-wrap items-end justify-between gap-4">
                 <div>
-                    <h2 className="text-xl font-semibold tracking-tight text-slate-50 sm:text-2xl">
+                    <p className="eyebrow">Control</p>
+                    <h2 className="section-title mt-1 text-xl sm:text-2xl">
                         Live Device Status Panel
                     </h2>
                     <p className="mt-1 text-sm text-slate-400">
                         Every device is organized by room and updates in real time
                     </p>
                 </div>
-                <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-slate-400">
+                <span className="chip">
                     {devices.length} devices monitored
                 </span>
             </div>
 
-            <div className="grid gap-5 xl:grid-cols-3">
+            <motion.div
+                variants={gridMotion}
+                initial="hidden"
+                whileInView="show"
+                viewport={{ once: true, margin: "-60px" }}
+                className="grid gap-5 xl:grid-cols-3"
+            >
                 {roomGroups.map((room, roomIndex) => {
                     const activeDevices = room.devices.filter((device) => device.status).length;
                     const roomPower = room.totalPower ?? room.devices.reduce((sum, device) => sum + (device.status ? device.powerRating : 0), 0);
 
                     return (
-                        <article
+                        <motion.article
                             key={room._id}
-                            className="rounded-[1.9rem] border border-white/10 bg-slate-950/60 p-5 shadow-[0_20px_50px_rgba(2,6,23,0.3)] backdrop-blur-sm"
+                            variants={cardMotion}
+                            className="glass-card rounded-[1.75rem] p-5"
                         >
                             <div className="flex items-start justify-between gap-4">
                                 <div>
                                     <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">
                                         Room {roomIndex + 1}
                                     </p>
-                                    <h3 className="mt-1 text-lg font-semibold tracking-tight text-slate-50">
+                                    <h3 className="mt-1 text-lg font-bold tracking-tight text-slate-50">
                                         {room.name}
                                     </h3>
                                     <p className="mt-1 text-sm text-slate-400">
@@ -57,15 +95,15 @@ const DeviceGrid = ({
                                     <p className="text-[10px] uppercase tracking-[0.22em] text-emerald-200/80">
                                         Load
                                     </p>
-                                    <p className="text-lg font-semibold text-emerald-300">
+                                    <p className="font-mono text-lg font-semibold text-emerald-300">
                                         {roomPower}W
                                     </p>
                                 </div>
                             </div>
 
-                            <div className="mt-4 flex items-center justify-between rounded-2xl border border-white/8 bg-white/5 px-4 py-3 text-sm text-slate-300">
+                            <div className="mt-4 flex items-center justify-between rounded-2xl border border-white/8 bg-white/[0.03] px-4 py-3 text-sm text-slate-300">
                                 <span>{activeDevices} / {room.devices.length} active</span>
-                                <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs uppercase tracking-[0.2em] text-slate-400">
+                                <span className="chip">
                                     Live
                                 </span>
                             </div>
@@ -78,8 +116,8 @@ const DeviceGrid = ({
                                         <div
                                             key={device._id}
                                             className={`group rounded-2xl border p-3 transition duration-300 ${device.status
-                                                ? "border-white/15 bg-white/7 shadow-[0_0_0_1px_rgba(255,255,255,0.04),0_18px_36px_rgba(14,165,233,0.12)]"
-                                                : "border-white/8 bg-slate-900/55"
+                                                ? "border-white/15 bg-white/[0.06] shadow-[0_0_0_1px_rgba(255,255,255,0.04),0_18px_36px_rgba(14,165,233,0.12)]"
+                                                : "border-white/8 bg-black/20"
                                                 }`}
                                         >
                                             <div className="flex items-start justify-between gap-3">
@@ -96,7 +134,7 @@ const DeviceGrid = ({
                                                 </div>
 
                                                 <div className={`flex h-11 w-11 items-center justify-center rounded-2xl border ${device.status ? "border-cyan-400/20 bg-cyan-400/10" : "border-white/10 bg-white/5"}`}>
-                                                    {device.type === "Fan" ? (
+                                                    {isFan ? (
                                                         <FaFan className={`text-lg ${device.status ? "animate-[spin_1.8s_linear_infinite] text-cyan-300" : "text-slate-500"}`} />
                                                     ) : (
                                                         <FaLightbulb className={`text-lg ${device.status ? "text-amber-300 drop-shadow-[0_0_14px_rgba(251,191,36,0.45)]" : "text-slate-500"}`} />
@@ -106,40 +144,30 @@ const DeviceGrid = ({
 
                                             <div className="mt-4 flex items-center justify-between gap-3">
                                                 <div className={`flex items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold tracking-[0.18em] ${device.status ? "bg-emerald-400/10 text-emerald-300" : "bg-slate-800/80 text-slate-400"}`}>
-                                                    <span className={`h-2 w-2 rounded-full ${device.status ? "bg-emerald-400" : "bg-slate-500"}`} />
                                                     {device.status ? "ON" : "OFF"}
                                                 </div>
 
-                                                <button
-                                                    onClick={() => onToggle(device)}
-                                                    className={`rounded-full px-3 py-2 text-xs font-semibold uppercase tracking-[0.18em] transition duration-200 ${device.status
-                                                        ? "bg-rose-500/90 text-white shadow-lg shadow-rose-500/20 hover:bg-rose-500"
-                                                        : "bg-emerald-500/90 text-white shadow-lg shadow-emerald-500/20 hover:bg-emerald-500"
-                                                        }`}
-                                                >
-                                                    {device.status ? "Turn Off" : "Turn On"}
-                                                </button>
+                                                <ToggleSwitch checked={device.status} onChange={() => onToggle(device)} />
                                             </div>
 
-                                            <div className="mt-3 h-1.5 rounded-full bg-white/5">
-                                                <div
-                                                    className={`h-full rounded-full transition-all duration-300 ${device.status ? (isFan ? "bg-cyan-300" : "bg-amber-300") : "bg-slate-700"}`}
-                                                    style={{ width: device.status ? "100%" : "18%" }}
+                                            <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-white/5">
+                                                <motion.div
+                                                    initial={false}
+                                                    animate={{ width: device.status ? "100%" : "18%" }}
+                                                    transition={{ duration: 0.4 }}
+                                                    className={`h-full rounded-full ${device.status ? (isFan ? "bg-cyan-300" : "bg-amber-300") : "bg-slate-700"}`}
                                                 />
                                             </div>
                                         </div>
                                     );
                                 })}
                             </div>
-                        </article>
+                        </motion.article>
                     );
                 })}
-            </div>
-
+            </motion.div>
         </section>
-
     );
-
 };
 
 export default DeviceGrid;

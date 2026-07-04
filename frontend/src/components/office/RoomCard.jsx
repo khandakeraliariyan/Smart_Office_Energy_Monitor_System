@@ -14,16 +14,11 @@ const RoomCard = ({ room }) => {
     ];
 
     return (
-
-        <div className="rounded-3xl border border-white/10 bg-white/5 p-5 shadow-[0_16px_40px_rgba(2,6,23,0.22)] backdrop-blur-sm">
-
+        <div className="glass-card rounded-3xl p-5">
             <div className="flex items-start justify-between gap-4">
-
                 <div>
-                    <h2 className="text-lg font-semibold tracking-tight text-slate-50">
-
+                    <h2 className="text-lg font-bold tracking-tight text-slate-50">
                         {room.name}
-
                     </h2>
                     <p className="mt-1 text-sm text-slate-400">
                         Connected devices in this room
@@ -31,23 +26,17 @@ const RoomCard = ({ room }) => {
                 </div>
 
                 <span className="rounded-full border border-emerald-400/15 bg-emerald-400/10 px-3 py-1 text-sm font-medium text-emerald-300">
-
                     {room.totalPower} W
-
                 </span>
-
             </div>
 
             <div className="mt-6 grid grid-cols-3 gap-4 place-items-center">
-
                 {deviceSlots.map((device, index) => (
-
                     <div
                         key={device?._id || index}
                         className={index === 3 ? "col-start-2 flex flex-col items-center gap-2" : "flex flex-col items-center gap-2"}
                     >
-
-                        <div className="flex h-20 w-20 items-center justify-center rounded-3xl border border-white/10 bg-slate-950/30">
+                        <div className="flex h-20 w-20 items-center justify-center rounded-3xl border border-white/10 bg-black/20">
                             {device ? (
                                 <DeviceIcon device={device} />
                             ) : (
@@ -57,7 +46,6 @@ const RoomCard = ({ room }) => {
 
                         {device && (
                             <span className="text-sm text-slate-300">
-
                                 {device.name}
                             </span>
                         )}
@@ -67,17 +55,11 @@ const RoomCard = ({ room }) => {
                                 Empty
                             </span>
                         )}
-
                     </div>
-
                 ))}
-
             </div>
-
         </div>
-
     );
-
 };
 
 export default RoomCard;

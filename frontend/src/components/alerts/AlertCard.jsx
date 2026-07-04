@@ -1,9 +1,16 @@
 import { FaExclamationTriangle } from "react-icons/fa";
+import { motion } from "framer-motion";
 
 const colors = {
-    HIGH: "border-rose-400/40 bg-rose-500/10 text-rose-200 shadow-rose-500/10",
-    MEDIUM: "border-amber-400/40 bg-amber-500/10 text-amber-100 shadow-amber-500/10",
-    LOW: "border-sky-400/40 bg-sky-500/10 text-sky-100 shadow-sky-500/10",
+    HIGH: "border-rose-400/30 bg-rose-500/10 text-rose-200",
+    MEDIUM: "border-amber-400/30 bg-amber-500/10 text-amber-100",
+    LOW: "border-sky-400/30 bg-sky-500/10 text-sky-100",
+};
+
+const iconColors = {
+    HIGH: "border-rose-400/30 bg-rose-400/15 text-rose-300",
+    MEDIUM: "border-amber-400/30 bg-amber-400/15 text-amber-300",
+    LOW: "border-sky-400/30 bg-sky-400/15 text-sky-300",
 };
 
 const typeLabels = {
@@ -12,15 +19,19 @@ const typeLabels = {
     HIGH_POWER: "High Power",
 };
 
+const cardMotion = {
+    hidden: { opacity: 0, x: 12 },
+    show: { opacity: 1, x: 0, transition: { duration: 0.35, ease: "easeOut" } },
+};
+
 const AlertCard = ({ alert }) => {
-
     return (
-
-        <article className={`rounded-2xl border p-4 shadow-[0_16px_35px_rgba(2,6,23,0.28)] ${colors[alert.severity] || colors.LOW}`}>
-
+        <motion.article
+            variants={cardMotion}
+            className={`rounded-2xl border p-4 shadow-[0_16px_35px_rgba(2,6,23,0.28)] backdrop-blur-sm ${colors[alert.severity] || colors.LOW}`}
+        >
             <div className="flex items-start gap-3">
-
-                <div className="mt-0.5 flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-white/10">
+                <div className={`mt-0.5 flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border ${iconColors[alert.severity] || iconColors.LOW}`}>
                     <FaExclamationTriangle className="text-lg" />
                 </div>
 
@@ -42,7 +53,7 @@ const AlertCard = ({ alert }) => {
                         <span>
                             {alert.room?.name || "Office"}
                         </span>
-                        <span>
+                        <span className="font-mono">
                             {new Date(alert.createdAt).toLocaleString([], {
                                 month: "short",
                                 day: "numeric",
@@ -52,13 +63,9 @@ const AlertCard = ({ alert }) => {
                         </span>
                     </div>
                 </div>
-
             </div>
-
-        </article>
-
+        </motion.article>
     );
-
 };
 
 export default AlertCard;
