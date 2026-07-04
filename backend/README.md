@@ -25,6 +25,7 @@
 - [10. Database](#10-database)
 - [11. API Documentation](#11-api-documentation)
 - [12. WebSocket Events](#12-websocket-events)
+- [Discord Bot Integration](#discord-bot-integration)
 - [13. Environment Variables](#13-environment-variables)
 - [14. Installation](#14-installation)
 - [15. Development](#15-development)
@@ -149,6 +150,15 @@ The backend currently uses MongoDB and Mongoose. The requested PostgreSQL, Prism
 - Current health check: `GET /`
 - Requested production health endpoint: `GET /health`
 - Readiness checks are planned for database, scheduler, and socket status
+
+### Discord Bot
+
+- Supports prefix commands in Discord text channels
+- Uses the shared backend API as its data source
+- Replies with rich Discord embeds
+- Supports room, device, alert, analytics, usage, and AI insight queries
+- Can be started with `npm run discord:bot`
+- Is also imported during backend server startup
 
 ## 4. Tech Stack
 
@@ -721,6 +731,51 @@ Example response:
 
 </details>
 
+<details>
+<summary>GET/POST /api/v1/discord/ask</summary>
+
+Returns an office answer formatted for Discord bot usage.
+
+Example GET request:
+
+```bash
+curl "http://localhost:5001/api/v1/discord/ask?question=show%20power%20usage"
+```
+
+Example POST request:
+
+```bash
+curl -X POST http://localhost:5001/api/v1/discord/ask \
+  -H "Content-Type: application/json" \
+  -d "{\"question\":\"show active alerts\"}"
+```
+
+Example response:
+
+```json
+{
+  "success": true,
+  "message": "Office status fetched for Discord bot",
+  "data": {
+    "answer": "The office is currently using 120 Watts of power.",
+    "source": "shared-backend",
+    "replyType": "power",
+    "embedTitle": "Power Overview",
+    "embedColor": 10855809,
+    "embedFields": []
+  },
+  "timestamp": "2026-07-04T10:00:00.000Z"
+}
+```
+
+Possible errors:
+
+| Status | Reason |
+| --- | --- |
+| `500` | Backend could not fetch dashboard, AI, or office status data |
+
+</details>
+
 ## 12. WebSocket Events
 
 Socket server:
@@ -761,6 +816,84 @@ Example payload:
 }
 ```
 
+## Discord Bot Integration
+
+The Discord bot lets users query the Office Energy Monitoring System directly from Discord. It reads from the same backend API used by the dashboard, so bot responses match the live system state.
+
+### Discord Server
+
+| Item | Value |
+| --- | --- |
+| Invite link | `https://discord.gg/KWfaSTjKY` |
+| Required channel | `#general` text channel |
+| Command prefix | `!` |
+| Slash-like text prefix | `/office` |
+
+After joining the Discord server, open the `#general` text channel and type one of the supported commands.
+
+### Supported Commands
+
+| Command | Description | Backend data used |
+| --- | --- | --- |
+| `!status` | Shows live office summary, active devices, and room count. | `/dashboard`, `/rooms` |
+| `!room Work Room 1` | Shows status for a matching room. | `/rooms` |
+| `!usage` | Shows current power, total rated power, estimated usage, and active devices. | `/dashboard`, `/power`, `/power/history` |
+| `!devices` | Lists tracked devices with ON/OFF status and room. | `/devices` |
+| `!rooms` | Lists rooms, device counts, and room power. | `/rooms` |
+| `!alerts` | Shows active alerts. | `/alerts` |
+| `!analytics` | Shows peak power, average power, and active devices. | `/analytics` |
+| `!insight` | Shows AI-powered energy insight. | `/ai` |
+
+The bot also supports related commands implemented in code:
+
+| Command | Description |
+| --- | --- |
+| `!dashboard` | Shows dashboard totals. |
+| `!power` | Shows current room-wise power. |
+| `!device name:<device name>` | Looks up one device. |
+| `!device name:<device name> action:on` | Turns a matching device on. |
+| `!device name:<device name> action:off` | Turns a matching device off. |
+| `/office status` | Text command alternative for office status. |
+
+### Bot Runtime
+
+The bot uses:
+
+- `discord.js`
+- `axios`
+- `DISCORD_BOT_TOKEN`
+- `DISCORD_BACKEND_URL`
+
+Run the bot directly:
+
+```bash
+npm run discord:bot
+```
+
+The backend also imports the bot during server startup. A lock file is used to reduce duplicate bot instances:
+
+```text
+backend/src/.discord-bot.lock
+```
+
+### Bot Permissions
+
+The Discord bot requires:
+
+- Guild access
+- Message read access
+- Message content intent
+- Permission to send messages in `#general`
+- Permission to send embeds
+
+### Schematic Link
+
+Sensible Circuit schematic:
+
+```text
+https://wokwi.com/projects/468542564572861441
+```
+
 ## 13. Environment Variables
 
 Create `backend/.env`.
@@ -772,7 +905,7 @@ MONGO_URI=
 GEMINI_API_KEY=
 GEMINI_MODEL=gemini-2.5-flash-lite
 DISCORD_BOT_TOKEN=
-DISCORD_BACKEND_URL=http://localhost:5001/api/v1/discord/ask
+DISCORD_BACKEND_URL=http://localhost:5001
 DATABASE_URL=
 JWT_SECRET=
 DISCORD_TOKEN=
@@ -787,7 +920,7 @@ OPENAI_KEY=
 | `GEMINI_API_KEY` | No | Implemented | Gemini key for AI insights. |
 | `GEMINI_MODEL` | No | Implemented | Gemini model name. |
 | `DISCORD_BOT_TOKEN` | No | Implemented | Discord bot token. |
-| `DISCORD_BACKEND_URL` | No | Implemented | Backend URL used by Discord service. |
+| `DISCORD_BACKEND_URL` | No | Implemented | Base backend URL used by the Discord bot, for example `http://localhost:5001`. |
 | `DATABASE_URL` |  | Placeholder | PostgreSQL/Prisma connection string. |
 | `JWT_SECRET` |  | Placeholder | JWT signing secret. |
 | `DISCORD_TOKEN` |  | Placeholder | Requested name; current code uses `DISCORD_BOT_TOKEN`. |
@@ -1142,6 +1275,22 @@ Check:
 - Bot token is valid
 - Bot has required Discord permissions
 - `DISCORD_BACKEND_URL` points to this backend
+- Commands are typed in the `#general` text channel
+- The bot has Message Content Intent enabled in the Discord Developer Portal
+- Only one bot instance is running, because the code uses a lock file to prevent duplicates
+
+Useful test commands:
+
+```text
+!status
+!room Work Room 1
+!usage
+!devices
+!rooms
+!alerts
+!analytics
+!insight
+```
 
 ### Environment Variables
 

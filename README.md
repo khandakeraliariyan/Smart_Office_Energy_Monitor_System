@@ -195,7 +195,7 @@ MONGO_URI=
 GEMINI_API_KEY=
 GEMINI_MODEL=gemini-2.5-flash-lite
 DISCORD_BOT_TOKEN=
-DISCORD_BACKEND_URL=http://localhost:5001/api/v1/discord/ask
+DISCORD_BACKEND_URL=http://localhost:5001
 ```
 
 ### Environment Variable Details
@@ -208,7 +208,7 @@ DISCORD_BACKEND_URL=http://localhost:5001/api/v1/discord/ask
 | `GEMINI_API_KEY` | No | Gemini API key for AI-generated insights. |
 | `GEMINI_MODEL` | No | Gemini model name. Defaults to `gemini-2.5-flash-lite` in the backend service. |
 | `DISCORD_BOT_TOKEN` | No | Discord bot token for the optional bot integration. |
-| `DISCORD_BACKEND_URL` | No | Backend URL used by the Discord bot integration. |
+| `DISCORD_BACKEND_URL` | No | Backend base URL used by the Discord bot integration. |
 
 ## Local Setup
 
@@ -237,7 +237,7 @@ MONGO_URI=
 GEMINI_API_KEY=
 GEMINI_MODEL=gemini-2.5-flash-lite
 DISCORD_BOT_TOKEN=
-DISCORD_BACKEND_URL=http://localhost:5001/api/v1/discord/ask
+DISCORD_BACKEND_URL=http://localhost:5001
 ```
 
 ### 4. Seed Demo Data
@@ -390,6 +390,35 @@ Socket server URL for local development:
 http://localhost:5001
 ```
 
+## Discord Bot
+
+The project includes a Discord bot integration that reads office data from the shared backend API.
+
+Discord server:
+
+```text
+https://discord.gg/KWfaSTjKY
+```
+
+Use these commands in the `#general` text channel:
+
+```text
+!status
+!room Work Room 1
+!usage
+!devices
+!rooms
+!alerts
+!analytics
+!insight
+```
+
+Sensible Circuit schematic:
+
+```text
+https://wokwi.com/projects/468542564572861441
+```
+
 ## Database Collections
 
 The backend uses MongoDB with Mongoose models for:
@@ -494,4 +523,3 @@ Automated tests:
 ## License
 
 This project is licensed under the terms in the [LICENSE](LICENSE) file.
-
