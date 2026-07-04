@@ -14,7 +14,7 @@ require("./discord/bot");
 
 const logger = require("./utils/logger");
 
-const PORT = process.env.PORT || 5000;
+const PORT = Number(process.env.PORT);
 
 const startServer = async () => {
     try {
@@ -27,6 +27,14 @@ const startServer = async () => {
         startSimulator(io);
 
         startScheduler();
+
+        server.on("error", (error) => {
+            if (error.code === "EADDRINUSE") {
+                logger.error("Port already in use", { Port: PORT });
+                process.exit(1);
+            }
+            throw error;
+        });
 
         server.listen(PORT, () => {
             logger.info("Server Started", {
