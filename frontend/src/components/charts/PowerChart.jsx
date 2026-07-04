@@ -1,67 +1,83 @@
 import {
-
-    LineChart,
-    Line,
+    AreaChart,
+    Area,
     CartesianGrid,
     XAxis,
     YAxis,
     Tooltip,
-    ResponsiveContainer
-
+    ResponsiveContainer,
 } from "recharts";
+import { FaChartLine } from "react-icons/fa";
 
 const PowerChart = ({ history }) => {
-
-    const data =
-        [...history]
-            .reverse()
-            .map(item => ({
-
-                time:
-                    new Date(item.createdAt)
-                        .toLocaleTimeString(),
-
-                power:
-                    item.totalPower
-
-            }));
+    const data = [...history]
+        .reverse()
+        .map((item) => ({
+            time: new Date(item.createdAt).toLocaleTimeString(),
+            power: item.totalPower,
+        }));
 
     const tickStyle = {
-        fill: "#94a3b8",
+        fill: "#64748b",
         fontSize: 12,
+        fontFamily: "var(--font-sans)",
     };
 
-    const tooltipStyle = {
-        backgroundColor: "rgba(15, 23, 42, 0.98)",
-        border: "1px solid rgba(255, 255, 255, 0.08)",
-        borderRadius: 14,
-        color: "#e2e8f0",
-        boxShadow: "0 20px 40px rgba(2, 6, 23, 0.45)",
+    const CustomTooltip = ({ active, payload, label }) => {
+        if (!active || !payload?.length) return null;
+
+        return (
+            <div className="glass-panel rounded-xl px-4 py-3 text-sm">
+                <p className="text-xs uppercase tracking-[0.16em] text-slate-500">{label}</p>
+                <p className="mt-1 flex items-center gap-2 font-semibold text-slate-50">
+                    <span className="h-2 w-2 rounded-full bg-cyan-400 shadow-[0_0_10px_rgba(34,211,238,0.8)]" />
+                    {payload[0].value}W
+                </p>
+            </div>
+        );
     };
 
     return (
+        <div className="glass-panel relative overflow-hidden rounded-[2rem] p-6 sm:p-7">
+            <div className="pointer-events-none absolute -left-20 -top-20 h-56 w-56 rounded-full bg-brand-500/10 blur-[100px]" />
 
-                <div className="rounded-3xl border border-white/10 bg-slate-950/60 p-6 shadow-[0_20px_50px_rgba(2,6,23,0.3)] backdrop-blur-sm sm:p-7">
-
-                            <div className="mb-5 flex items-center justify-between gap-3">
-                                <div>
-                                    <h2 className="text-xl font-semibold tracking-tight text-slate-50 sm:text-2xl">
-                                        Live Power Usage
-                                    </h2>
-                                    <p className="mt-1 text-sm text-slate-400">
-                                        Recent office-wide energy trend
-                                    </p>
-                                </div>
-                                <span className="rounded-full border border-emerald-400/15 bg-emerald-400/10 px-3 py-1 text-xs font-medium text-emerald-300">
-                                    Live feed
-                                </span>
-                            </div>
+            <div className="relative mb-6 flex flex-wrap items-center justify-between gap-3">
+                <div className="flex items-center gap-3">
+                    <span className="flex h-10 w-10 items-center justify-center rounded-xl border border-cyan-400/20 bg-cyan-400/10 text-cyan-300">
+                        <FaChartLine />
+                    </span>
+                    <div>
+                        <h2 className="section-title text-xl sm:text-2xl">
+                            Live Power Usage
+                        </h2>
+                        <p className="mt-0.5 text-sm text-slate-400">
+                            Recent office-wide energy trend
+                        </p>
+                    </div>
+                </div>
+                <span className="chip border-emerald-400/20 bg-emerald-400/10 text-emerald-300">
+                    <span className="relative flex h-1.5 w-1.5">
+                        <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+                        <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-400" />
+                    </span>
+                    Live feed
+                </span>
+            </div>
 
             <ResponsiveContainer width="100%" height={320}>
+                <AreaChart data={data} margin={{ top: 10, right: 20, left: 0, bottom: 0 }}>
+                    <defs>
+                        <linearGradient id="powerFill" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stopColor="#22d3ee" stopOpacity={0.35} />
+                            <stop offset="100%" stopColor="#22d3ee" stopOpacity={0} />
+                        </linearGradient>
+                        <linearGradient id="powerStroke" x1="0" y1="0" x2="1" y2="0">
+                            <stop offset="0%" stopColor="#818cf8" />
+                            <stop offset="100%" stopColor="#22d3ee" />
+                        </linearGradient>
+                    </defs>
 
-                <LineChart data={data} margin={{ top: 10, right: 20, left: 0, bottom: 0 }}>
-
-                    <CartesianGrid stroke="rgba(148, 163, 184, 0.14)" strokeDasharray="4 12" vertical={false} />
+                    <CartesianGrid stroke="rgba(148, 163, 184, 0.1)" strokeDasharray="4 12" vertical={false} />
 
                     <XAxis
                         dataKey="time"
@@ -78,41 +94,22 @@ const PowerChart = ({ history }) => {
                         width={44}
                     />
 
-                    <Tooltip contentStyle={tooltipStyle} labelStyle={{ color: "#cbd5e1" }} />
+                    <Tooltip content={<CustomTooltip />} cursor={{ stroke: "rgba(129,140,248,0.35)", strokeWidth: 1 }} />
 
-                    <Line
-
+                    <Area
                         type="monotone"
-
                         dataKey="power"
-
-                        stroke="url(#powerGradient)"
-
+                        stroke="url(#powerStroke)"
                         strokeWidth={3}
-
+                        fill="url(#powerFill)"
                         dot={false}
-
-                        activeDot={{ r: 5 }}
-
+                        activeDot={{ r: 5, fill: "#22d3ee", stroke: "#0f172a", strokeWidth: 2 }}
+                        animationDuration={900}
                     />
-
-                </LineChart>
-
+                </AreaChart>
             </ResponsiveContainer>
-
-                            <svg width="0" height="0">
-                                <defs>
-                                    <linearGradient id="powerGradient" x1="0" y1="0" x2="1" y2="0">
-                                        <stop offset="0%" stopColor="#38bdf8" />
-                                        <stop offset="100%" stopColor="#22c55e" />
-                                    </linearGradient>
-                                </defs>
-                            </svg>
-
         </div>
-
     );
-
 };
 
 export default PowerChart;
