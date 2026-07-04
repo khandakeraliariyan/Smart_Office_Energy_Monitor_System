@@ -21,7 +21,7 @@ const AlertPanel = ({ alerts }) => {
                         <h2 className="section-title text-xl sm:text-2xl">
                             Active Alerts
                         </h2>
-                        <p className="mt-0.5 text-sm text-slate-400">
+                        <p className="text-muted mt-0.5 text-sm">
                             Timestamped anomalies that need attention
                         </p>
                     </div>
@@ -39,7 +39,7 @@ const AlertPanel = ({ alerts }) => {
                 className="relative space-y-5"
             >
                 {alerts.length === 0 ? (
-                    <div className="rounded-xl border border-dashed border-white/10 bg-white/[0.02] px-7 py-9 text-center text-sm text-slate-400">
+                    <div className="border-subtle surface-empty text-muted rounded-xl border border-dashed px-7 py-9 text-center text-sm">
                         All clear — no active alerts right now.
                     </div>
                 ) : (

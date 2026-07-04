@@ -10,6 +10,11 @@ import {
 import { FaChartLine } from "react-icons/fa";
 
 const PowerChart = ({ history }) => {
+    const styles = getComputedStyle(document.documentElement);
+    const textFaint = styles.getPropertyValue("--text-faint").trim() || "#64748b";
+    const chartGrid = styles.getPropertyValue("--chart-grid").trim() || "rgba(148, 163, 184, 0.1)";
+    const chartCursor = styles.getPropertyValue("--chart-cursor").trim() || "rgba(129,140,248,0.35)";
+
     const data = [...history]
         .reverse()
         .map((item) => ({
@@ -18,7 +23,7 @@ const PowerChart = ({ history }) => {
         }));
 
     const tickStyle = {
-        fill: "#64748b",
+        fill: textFaint,
         fontSize: 12,
         fontFamily: "var(--font-sans)",
     };
@@ -28,8 +33,8 @@ const PowerChart = ({ history }) => {
 
         return (
             <div className="glass-panel rounded-2xl px-5 py-4 text-center text-sm">
-                <p className="text-xs uppercase tracking-[0.16em] text-slate-500">{label}</p>
-                <p className="mt-1 flex items-center gap-2 font-semibold text-slate-50">
+                <p className="text-faint text-xs uppercase tracking-[0.16em]">{label}</p>
+                <p className="text-primary mt-1 flex items-center gap-2 font-semibold">
                     <span className="h-2 w-2 rounded-full bg-cyan-400 shadow-[0_0_10px_rgba(34,211,238,0.8)]" />
                     {payload[0].value}W
                 </p>
@@ -50,7 +55,7 @@ const PowerChart = ({ history }) => {
                         <h2 className="section-title text-xl sm:text-2xl">
                             Live Power Usage
                         </h2>
-                        <p className="mt-0.5 text-sm text-slate-400">
+                        <p className="text-muted mt-0.5 text-sm">
                             Recent office-wide energy trend
                         </p>
                     </div>
@@ -78,7 +83,7 @@ const PowerChart = ({ history }) => {
                         </linearGradient>
                     </defs>
 
-                    <CartesianGrid stroke="rgba(148, 163, 184, 0.1)" strokeDasharray="4 12" vertical={false} />
+                    <CartesianGrid stroke={chartGrid} strokeDasharray="4 12" vertical={false} />
 
                     <XAxis
                         dataKey="time"
@@ -95,7 +100,7 @@ const PowerChart = ({ history }) => {
                         width={44}
                     />
 
-                    <Tooltip content={<CustomTooltip />} cursor={{ stroke: "rgba(129,140,248,0.35)", strokeWidth: 1 }} />
+                    <Tooltip content={<CustomTooltip />} cursor={{ stroke: chartCursor, strokeWidth: 1 }} />
 
                     <Area
                         type="monotone"

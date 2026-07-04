@@ -20,7 +20,7 @@ const AIInsight = ({ insight, loading }) => {
                     <h2 className="section-title text-xl sm:text-2xl">
                         AI Energy Insight
                     </h2>
-                    <p className="text-sm text-slate-400">
+                    <p className="text-muted text-sm">
                         Generated from the latest office activity
                     </p>
                 </div>
@@ -28,9 +28,9 @@ const AIInsight = ({ insight, loading }) => {
 
             {loading ? (
                 <div className="relative mt-6 space-y-3">
-                    <div className="h-3 w-40 animate-pulse rounded-full bg-white/10" />
-                    <div className="h-3 w-5/6 animate-pulse rounded-full bg-white/10" />
-                    <div className="h-3 w-2/3 animate-pulse rounded-full bg-white/10" />
+                    <div className="surface-soft h-3 w-40 animate-pulse rounded-full" />
+                    <div className="surface-soft h-3 w-5/6 animate-pulse rounded-full" />
+                    <div className="surface-soft h-3 w-2/3 animate-pulse rounded-full" />
                 </div>
             ) : (
                 <motion.p
@@ -38,7 +38,7 @@ const AIInsight = ({ insight, loading }) => {
                     initial={{ opacity: 0, y: 6 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.4 }}
-                className="relative mt-7 max-w-4xl text-base leading-8 text-slate-300 sm:text-lg"
+                className="text-secondary relative mt-7 max-w-4xl text-base leading-8 sm:text-lg"
                 >
                     {insight}
                 </motion.p>

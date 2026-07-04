@@ -35,12 +35,7 @@ const OfficeLayout = ({ rooms }) => {
             </div>
 
             <div
-                className="glass-panel relative overflow-hidden rounded-3xl px-5 py-6 sm:px-7 sm:py-8"
-                style={{
-                    backgroundImage:
-                        "linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px)",
-                    backgroundSize: "28px 28px",
-                }}
+                className="glass-panel app-grid relative overflow-hidden rounded-3xl px-5 py-6 sm:px-7 sm:py-8"
             >
                 <div className="pointer-events-none absolute -left-16 top-1/2 h-64 w-64 -translate-y-1/2 rounded-full bg-brand-500/10 blur-[100px]" />
 
@@ -73,19 +68,19 @@ const OfficeLayout = ({ rooms }) => {
                                                     <p className={`text-[11px] font-semibold uppercase tracking-[0.3em] ${accent.text}`}>
                                                         Room {index + 1}
                                                     </p>
-                                                    <h3 className="text-lg font-bold tracking-tight text-slate-50 sm:text-[1.15rem]">
+                                                    <h3 className="text-primary text-lg font-bold tracking-tight sm:text-[1.15rem]">
                                                         {room.name}
                                                     </h3>
-                                                    <p className="max-w-[16rem] text-sm leading-6 text-slate-400">
+                                                    <p className="text-muted max-w-[16rem] text-sm leading-6">
                                                         {room.description}
                                                     </p>
                                                 </div>
 
-                                                <div className="self-start rounded-xl border border-white/10 bg-white/[0.04] px-4 py-3 text-center backdrop-blur-sm sm:self-auto sm:text-right">
-                                                    <p className="text-[10px] uppercase tracking-[0.22em] text-slate-500">
+                                                <div className="border-subtle surface-soft self-start rounded-xl border px-4 py-3 text-center backdrop-blur-sm sm:self-auto sm:text-right">
+                                                    <p className="text-faint text-[10px] uppercase tracking-[0.22em]">
                                                         Live load
                                                     </p>
-                                                    <p className="font-mono text-lg font-bold text-slate-50 sm:text-xl">
+                                                    <p className="text-primary font-mono text-lg font-bold sm:text-xl">
                                                         {room.totalPower}W
                                                     </p>
                                                 </div>
@@ -110,18 +105,18 @@ const OfficeLayout = ({ rooms }) => {
                                                             key={`${room._id}-${slot.slot}`}
                                                             className={`flex h-full w-full flex-col items-center justify-center gap-2 ${slotClasses[slot.slot]}`}
                                                         >
-                                                            <div className={`flex h-16 w-16 items-center justify-center rounded-xl border transition-shadow duration-300 ${device?.status ? "border-white/15 bg-white/[0.06] shadow-[0_0_24px_rgba(56,189,248,0.16)]" : "border-white/8 bg-black/20"}`}>
+                                                            <div className={`flex h-16 w-16 items-center justify-center rounded-xl border transition-shadow duration-300 ${device?.status ? "border-subtle surface-soft shadow-[0_0_24px_rgba(56,189,248,0.16)]" : "border-muted surface-strong"}`}>
                                                                 {device ? (
                                                                     <div className={device.status ? "scale-100" : "scale-90 opacity-50"}>
                                                                         <DeviceIcon device={device} />
                                                                     </div>
                                                                 ) : (
-                                                                    <div className="h-7 w-7 rounded-full border border-dashed border-white/15" />
+                                                                    <div className="border-subtle h-7 w-7 rounded-full border border-dashed" />
                                                                 )}
                                                             </div>
 
                                                             {device && (
-                                                                    <span className="rounded-full border border-white/10 bg-black/40 px-3 py-1.5 text-[11px] font-medium text-slate-200 shadow-sm">
+                                                                    <span className="border-subtle surface-strong text-secondary rounded-full border px-3 py-1.5 text-[11px] font-medium shadow-sm">
                                                                     {device.name}
                                                                 </span>
                                                             )}
@@ -130,20 +125,20 @@ const OfficeLayout = ({ rooms }) => {
                                                 })}
                                             </div>
 
-                                            <div className="mt-6 grid grid-cols-2 gap-4 text-xs text-slate-400">
-                                                <div className="rounded-xl border border-white/8 bg-white/[0.03] px-4 py-3">
-                                                    <p className="flex items-center gap-1.5 uppercase tracking-[0.22em] text-slate-500">
+                                            <div className="text-muted mt-6 grid grid-cols-2 gap-4 text-xs">
+                                                <div className="border-muted surface-muted rounded-xl border px-4 py-3">
+                                                    <p className="text-faint flex items-center gap-1.5 uppercase tracking-[0.22em]">
                                                         <FaFan className="text-cyan-300/70" /> Fans
                                                     </p>
-                                                    <p className="mt-1 text-sm font-semibold text-slate-100">
+                                                    <p className="text-primary mt-1 text-sm font-semibold">
                                                         {fanCount} total
                                                     </p>
                                                 </div>
-                                                <div className="rounded-xl border border-white/8 bg-white/[0.03] px-4 py-3">
-                                                    <p className="flex items-center gap-1.5 uppercase tracking-[0.22em] text-slate-500">
+                                                <div className="border-muted surface-muted rounded-xl border px-4 py-3">
+                                                    <p className="text-faint flex items-center gap-1.5 uppercase tracking-[0.22em]">
                                                         <FaLightbulb className="text-amber-300/70" /> Lights
                                                     </p>
-                                                    <p className="mt-1 text-sm font-semibold text-slate-100">
+                                                    <p className="text-primary mt-1 text-sm font-semibold">
                                                         {lightCount} total
                                                     </p>
                                                 </div>

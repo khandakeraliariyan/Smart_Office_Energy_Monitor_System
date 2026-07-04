@@ -20,12 +20,12 @@ const AnalyticsCard = ({ title, value, unit, accent = "brand" }) => {
 
             <div className="relative flex h-full flex-col items-center justify-center gap-4 text-center">
                 <span className={`h-2 w-2 rounded-full ${theme.dot}`} />
-                <p className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-400">
+                <p className="text-muted text-xs font-semibold uppercase tracking-[0.22em]">
                     {title}
                 </p>
                 <h2 className={`text-3xl font-extrabold tracking-tight ${theme.text}`} style={{ fontFamily: "var(--font-display)" }}>
                     {value}
-                    <span className="ml-1 text-base font-semibold text-slate-500">
+                    <span className="text-faint ml-1 text-base font-semibold">
                         {unit}
                     </span>
                 </h2>

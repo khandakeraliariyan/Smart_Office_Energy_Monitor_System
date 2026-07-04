@@ -37,19 +37,19 @@ const AlertCard = ({ alert }) => {
 
                 <div className="min-w-0 flex-1 space-y-2">
                     <div className="flex flex-wrap items-center justify-center gap-2 sm:justify-start">
-                        <h3 className="text-base font-semibold tracking-tight text-slate-50">
+                        <h3 className="text-primary text-base font-semibold tracking-tight">
                             {alert.title}
                         </h3>
-                        <span className="rounded-full border border-white/10 bg-white/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.22em] text-slate-100/90">
+                        <span className="border-subtle surface-soft text-secondary rounded-full border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.22em]">
                             {typeLabels[alert.type] || alert.type}
                         </span>
                     </div>
 
-                    <p className="text-sm leading-6 text-slate-200/90">
+                    <p className="text-secondary text-sm leading-6">
                         {alert.message}
                     </p>
 
-                    <div className="flex flex-wrap items-center justify-center gap-2 text-xs text-slate-300/80 sm:justify-between">
+                    <div className="text-muted flex flex-wrap items-center justify-center gap-2 text-xs sm:justify-between">
                         <span>
                             {alert.room?.name || "Office"}
                         </span>

@@ -1,6 +1,6 @@
 import { FaBolt } from "react-icons/fa";
 import { MdCircle } from "react-icons/md";
-import { FaChevronDown, FaPlug, FaTriangleExclamation } from "react-icons/fa6";
+import { FaChevronDown, FaMoon, FaPlug, FaSun, FaTriangleExclamation } from "react-icons/fa6";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import DeviceGrid from "../devices/DeviceGrid";
@@ -16,6 +16,8 @@ const Navbar = ({
     rooms = [],
     devices = [],
     onToggleDevice,
+    isLightMode,
+    onToggleTheme,
 }) => {
     const [alertsOpen, setAlertsOpen] = useState(false);
     const [devicesOpen, setDevicesOpen] = useState(false);
@@ -23,14 +25,14 @@ const Navbar = ({
     const activeDevices = devices.filter((device) => device.status).length;
 
     return (
-        <nav className="sticky top-0 z-40 w-full border-b border-white/10 bg-[#05070f]/80 backdrop-blur-2xl">
+        <nav className="nav-surface sticky top-0 z-40 w-full border-b backdrop-blur-2xl">
             <div className="mx-auto flex max-w-[1760px] items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8">
                 <div className="flex items-center gap-3">
                     <motion.div
                         initial={{ rotate: -8, scale: 0.9 }}
                         animate={{ rotate: 0, scale: 1 }}
                         transition={{ type: "spring", stiffness: 200, damping: 14 }}
-                        className="relative flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-gradient-to-br from-brand-500 to-cyan-400 shadow-[0_0_28px_rgba(99,102,241,0.45)] sm:h-14 sm:w-14"
+                        className="border-subtle relative flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border bg-gradient-to-br from-brand-500 to-cyan-400 shadow-[0_0_28px_rgba(99,102,241,0.45)] sm:h-14 sm:w-14"
                     >
                         <FaBolt className="text-sm text-white drop-shadow sm:text-base" />
                     </motion.div>
@@ -43,7 +45,15 @@ const Navbar = ({
                 </div>
 
                 <div className="relative flex items-center gap-2">
-                    
+                    <button
+                        type="button"
+                        onClick={onToggleTheme}
+                        className="border-subtle surface-soft text-secondary flex h-10 w-10 items-center justify-center rounded-full border transition hover:border-brand-400/40 hover:text-brand-300"
+                        aria-label={isLightMode ? "Switch to dark mode" : "Switch to light mode"}
+                        title={isLightMode ? "Dark mode" : "Light mode"}
+                    >
+                        {isLightMode ? <FaMoon /> : <FaSun />}
+                    </button>
 
                     <button
                         type="button"
@@ -111,12 +121,12 @@ const Navbar = ({
                             transition={{ duration: 0.18, ease: "easeOut" }}
                             className="glass-panel absolute right-0 top-full mt-3 w-[min(calc(100vw-2rem),30rem)] overflow-hidden rounded-2xl border-rose-400/20"
                         >
-                            <div className="flex items-center justify-between gap-4 border-b border-white/10 px-5 py-4">
+                            <div className="border-subtle flex items-center justify-between gap-4 border-b px-5 py-4">
                                 <div>
                                     <h2 className="section-title text-base">
                                         Active Alerts
                                     </h2>
-                                    <p className="mt-0.5 text-xs text-slate-400">
+                                    <p className="text-muted mt-0.5 text-xs">
                                         Timestamped anomalies that need attention
                                     </p>
                                 </div>
@@ -127,7 +137,7 @@ const Navbar = ({
 
                             <div className="max-h-[28rem] space-y-3 overflow-y-auto px-4 py-4">
                                 {alerts.length === 0 ? (
-                                    <div className="rounded-xl border border-dashed border-white/10 bg-white/[0.02] px-5 py-6 text-center text-sm text-slate-400">
+                                    <div className="border-subtle surface-empty text-muted rounded-xl border border-dashed px-5 py-6 text-center text-sm">
                                         All clear. No active alerts right now.
                                     </div>
                                 ) : (
@@ -142,17 +152,17 @@ const Navbar = ({
                                                 </span>
                                                 <div className="min-w-0 flex-1">
                                                     <div className="flex flex-wrap items-center gap-2">
-                                                        <h3 className="text-sm font-semibold text-slate-50">
+                                                        <h3 className="text-primary text-sm font-semibold">
                                                             {alert.title}
                                                         </h3>
-                                                        <span className="rounded-full border border-white/10 bg-white/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-100/90">
+                                                        <span className="border-subtle surface-soft text-secondary rounded-full border px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.18em]">
                                                             {typeLabels[alert.type] || alert.type}
                                                         </span>
                                                     </div>
-                                                    <p className="mt-2 text-sm leading-6 text-slate-200/90">
+                                                    <p className="text-secondary mt-2 text-sm leading-6">
                                                         {alert.message}
                                                     </p>
-                                                    <div className="mt-2 flex flex-wrap items-center justify-between gap-2 text-xs text-slate-300/80">
+                                                    <div className="text-muted mt-2 flex flex-wrap items-center justify-between gap-2 text-xs">
                                                         <span>{alert.room?.name || "Office"}</span>
                                                         <span className="font-mono">
                                                             {new Date(alert.createdAt).toLocaleString([], {

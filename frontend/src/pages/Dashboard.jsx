@@ -34,7 +34,10 @@ const heroStats = [
     { key: "alerts", label: "Alerts", icon: FaTriangleExclamation, accent: "text-rose-300", bg: "bg-rose-400/10", border: "border-rose-400/15" },
 ];
 
-const Dashboard = () => {
+const Dashboard = ({
+    isLightMode,
+    onToggleTheme,
+}) => {
     const {
         dashboard,
         loading,
@@ -55,7 +58,7 @@ const Dashboard = () => {
 
     if (error) {
         return (
-            <div className="flex min-h-screen items-center justify-center bg-[#05070f] px-6 text-center text-rose-300">
+            <div className="flex min-h-screen items-center justify-center px-6 text-center text-rose-300">
                 {error}
             </div>
         );
@@ -91,6 +94,8 @@ const Dashboard = () => {
                 rooms={dashboard.rooms}
                 devices={dashboard.devices}
                 onToggleDevice={handleToggle}
+                isLightMode={isLightMode}
+                onToggleTheme={onToggleTheme}
             />
 
             <motion.main
@@ -105,7 +110,7 @@ const Dashboard = () => {
 
                     <div className="relative mx-auto flex max-w-5xl flex-col items-center gap-8">
                         <div className="space-y-3 text-center">
-                            <h1 className="text-3xl font-extrabold tracking-tight text-slate-50 sm:text-4xl lg:text-[2.95rem] lg:leading-[1.04]" style={{ fontFamily: "var(--font-display)" }}>
+                            <h1 className="text-primary text-3xl font-extrabold tracking-tight sm:text-4xl lg:text-[2.95rem] lg:leading-[1.04]" style={{ fontFamily: "var(--font-display)" }}>
                                 <span className="gradient-text">BigSave</span>
                             </h1>
                             <p className="surface-copy mx-auto text-base sm:text-lg">
@@ -132,8 +137,8 @@ const Dashboard = () => {
                                             <span className={`flex h-8 w-8 items-center justify-center rounded-xl border ${stat.border} ${stat.bg}`}>
                                                 <Icon className={`text-sm ${stat.accent}`} />
                                             </span>
-                                            <p className="text-xs uppercase tracking-[0.2em] text-slate-400">{stat.label}</p>
-                                            <p className="text-2xl font-bold tracking-tight text-slate-50 sm:text-[1.75rem]">{statValues[stat.key]}</p>
+                                            <p className="text-muted text-xs uppercase tracking-[0.2em]">{stat.label}</p>
+                                            <p className="text-primary text-2xl font-bold tracking-tight sm:text-[1.75rem]">{statValues[stat.key]}</p>
                                         </div>
                                     </motion.div>
                                 );
